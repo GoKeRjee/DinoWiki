@@ -18,7 +18,7 @@ interface DinoDao {
     fun getDinoById(id: Long): Flow<Dino?>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun create(dino: Dino): Long
+    suspend fun create(dino: Dino): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun update(dino: Dino): Long

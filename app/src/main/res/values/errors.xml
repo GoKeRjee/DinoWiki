@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="value_empty">value is empty</string>
+    <string name="value_blank">value is blank</string>
+    <string name="value_too_short">value is too short</string>
+    <string name="value_too_long">value is too long</string>
+    <string name="gender_must_set">Gender must set</string>
+    <string name="type_must_set">Type must set</string>
+    <string name="regime_must_set">Regime must set</string>
+    <string name="apprivoiser_must_set">Apprivoiser must set</string>
+</resources>

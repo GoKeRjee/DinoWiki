@@ -4,4 +4,5 @@ enum class Type {
     AERIEN,
     AQUATIQUE,
     TERRESTRE,
+    CAVERNE
 }

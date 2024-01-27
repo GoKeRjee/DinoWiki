@@ -2,7 +2,11 @@ package fr.uha.hassenforder.team.repository
 
 import fr.uha.hassenforder.team.database.DinoDao
 import fr.uha.hassenforder.team.model.Dino
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
+
 
 class DinoRepository(private val dinoDao: DinoDao) {
     fun getAll(): Flow<List<Dino>> {
@@ -13,19 +17,19 @@ class DinoRepository(private val dinoDao: DinoDao) {
         return dinoDao.getDinoById(id)
     }
 
-    fun create(dino: Dino): Long {
-        return dinoDao.create(dino)
+    suspend fun create(dino: Dino): Long = withContext(Dispatchers.IO) {
+        return@withContext dinoDao.create(dino)
     }
 
-    fun update(dino: Dino): Long {
-        return dinoDao.update(dino)
+    suspend fun update(dino: Dino): Long = withContext(Dispatchers.IO) {
+        return@withContext dinoDao.update(dino)
     }
 
-    fun upsert(dino: Dino): Long {
-        return dinoDao.upsert(dino)
+    suspend fun upsert(dino: Dino): Long = withContext(Dispatchers.IO) {
+        return@withContext dinoDao.upsert(dino)
     }
 
-    fun delete(dino: Dino) {
+    suspend fun delete(dino: Dino) = withContext(Dispatchers.IO) {
         dinoDao.delete(dino)
     }
 

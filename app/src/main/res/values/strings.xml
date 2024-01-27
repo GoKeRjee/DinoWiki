@@ -6,4 +6,6 @@
     <string name="picture">picture</string>
     <string name="name">name</string>
     <string name="regime">regime</string>
+    <string name="loading">Loading the content</string>
+    <string name="error">Error loading content</string>
 </resources>
