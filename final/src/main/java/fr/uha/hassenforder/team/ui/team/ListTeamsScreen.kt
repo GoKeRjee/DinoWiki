@@ -28,11 +28,11 @@ import fr.uha.hassenforder.team.model.Team
 fun ListTeamsScreen(
     vm: ListTeamsViewModel = hiltViewModel(),
     onCreate: () -> Unit,
-    onEdit: (team : Team) -> Unit,
-    ) {
+    onEdit: (team: Team) -> Unit,
+) {
     val list = vm.teams.collectAsStateWithLifecycle(initialValue = emptyList())
 
-    val menuEntries = listOf (
+    val menuEntries = listOf(
         AppMenuEntry.OverflowEntry(title = R.string.populate, listener = { vm.populateDatabase() }),
         AppMenuEntry.OverflowEntry(title = R.string.clear, listener = { vm.clearDatabase() }),
     )
@@ -40,7 +40,7 @@ fun ListTeamsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { AppTitle (pageTitleId = R.string.title_teams) },
+                title = { AppTitle(pageTitleId = R.string.title_teams) },
                 actions = { AppMenu(menuEntries) },
             )
         },
@@ -49,8 +49,8 @@ fun ListTeamsScreen(
                 Icon(Icons.Filled.Add, contentDescription = "add")
             }
         }
-    ) {
-        innerPadding -> LazyColumn(
+    ) { innerPadding ->
+        LazyColumn(
             modifier = Modifier.padding(innerPadding)
         ) {
             items(
@@ -67,14 +67,18 @@ fun ListTeamsScreen(
 }
 
 @Composable
-private fun TeamItem (team: Team) {
-    ListItem (
+private fun TeamItem(team: Team) {
+    ListItem(
         headlineContent = {
             Text(team.name)
         },
         supportingContent = {
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                Icon(imageVector = Icons.Outlined.Start, contentDescription = "start", modifier = Modifier.padding(end = 8.dp))
+                Icon(
+                    imageVector = Icons.Outlined.Start,
+                    contentDescription = "start",
+                    modifier = Modifier.padding(end = 8.dp)
+                )
                 Text(
                     Converter.convert(team.startDay),
                     fontWeight = FontWeight.Bold

@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import fr.uha.hassenforder.team.ui.person.CreateDinoScreen
 import fr.uha.hassenforder.team.ui.theme.Team2023Theme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Greeting("Ensisa !")
+                    CreateDinoScreen()
                 }
             }
         }
@@ -29,7 +30,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Hello $name !",
         modifier = modifier
     )
 }

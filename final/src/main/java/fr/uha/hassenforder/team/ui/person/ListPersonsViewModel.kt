@@ -14,9 +14,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ListPersonsViewModel @Inject constructor (
+class ListPersonsViewModel @Inject constructor(
     private val repository: PersonRepository
-): ViewModel() {
+) : ViewModel() {
 
     val persons: Flow<List<PersonWithDetails>> = repository.getAllDetailed()
 
@@ -24,13 +24,13 @@ class ListPersonsViewModel @Inject constructor (
         repository.delete(person)
     }
 
-    fun populateDatabase () = viewModelScope.launch {
+    fun populateDatabase() = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             FeedDatabase().populate()
         }
     }
 
-    fun clearDatabase () = viewModelScope.launch {
+    fun clearDatabase() = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             FeedDatabase().clear()
         }

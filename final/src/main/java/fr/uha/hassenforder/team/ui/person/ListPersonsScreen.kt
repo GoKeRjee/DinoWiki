@@ -29,11 +29,11 @@ import fr.uha.hassenforder.team.model.PersonWithDetails
 fun ListPersonsScreen(
     vm: ListPersonsViewModel = hiltViewModel(),
     onCreate: () -> Unit,
-    onEdit: (person : Person) -> Unit,
-    ) {
+    onEdit: (person: Person) -> Unit,
+) {
     val list = vm.persons.collectAsStateWithLifecycle(initialValue = emptyList())
 
-    val menuEntries = listOf (
+    val menuEntries = listOf(
         AppMenuEntry.OverflowEntry(title = R.string.populate, listener = { vm.populateDatabase() }),
         AppMenuEntry.OverflowEntry(title = R.string.clear, listener = { vm.clearDatabase() }),
     )
@@ -41,7 +41,7 @@ fun ListPersonsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { AppTitle (pageTitleId = R.string.title_persons) },
+                title = { AppTitle(pageTitleId = R.string.title_persons) },
                 actions = { AppMenu(menuEntries) },
             )
         },
@@ -50,8 +50,8 @@ fun ListPersonsScreen(
                 Icon(Icons.Filled.Add, contentDescription = "add")
             }
         }
-    ) {
-        innerPadding -> LazyColumn(
+    ) { innerPadding ->
+        LazyColumn(
             modifier = Modifier.padding(innerPadding)
         ) {
             items(
@@ -68,14 +68,14 @@ fun ListPersonsScreen(
 }
 
 @Composable
-private fun PersonItem (person : PersonWithDetails) {
-    val gender : ImageVector =
-            when (person.person.gender) {
-                Gender.NO -> Icons.Outlined.DoNotDisturb
-                Gender.GIRL -> Icons.Outlined.Female
-                Gender.BOY -> Icons.Outlined.Male
-            }
-    ListItem (
+private fun PersonItem(person: PersonWithDetails) {
+    val gender: ImageVector =
+        when (person.person.gender) {
+            Gender.NO -> Icons.Outlined.DoNotDisturb
+            Gender.GIRL -> Icons.Outlined.Female
+            Gender.BOY -> Icons.Outlined.Male
+        }
+    ListItem(
         headlineContent = {
             Row() {
                 Text(person.person.firstname, modifier = Modifier.padding(end = 8.dp))
@@ -118,7 +118,11 @@ private fun PersonItem (person : PersonWithDetails) {
             }
         },
         trailingContent = {
-            Icon(imageVector = gender, contentDescription = "gender", modifier = Modifier.size(48.dp) )
+            Icon(
+                imageVector = gender,
+                contentDescription = "gender",
+                modifier = Modifier.size(48.dp)
+            )
         },
     )
 }

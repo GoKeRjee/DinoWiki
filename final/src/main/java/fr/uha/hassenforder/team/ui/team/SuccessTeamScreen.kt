@@ -20,12 +20,15 @@ fun SuccessTeamScreen(
     team: TeamViewModel.TeamUIState,
     uiCB: TeamViewModel.TeamUICallback
 ) {
-    val showDialog =  remember { mutableStateOf(false) }
+    val showDialog = remember { mutableStateOf(false) }
 
     if (showDialog.value) {
         PersonPicker(
             title = R.string.leader_select,
-            onSelect = { showDialog.value = false; if (it != null) uiCB.onEvent(TeamViewModel.UIEvent.LeaderChanged(it.pid)) }
+            onSelect = {
+                showDialog.value =
+                    false; if (it != null) uiCB.onEvent(TeamViewModel.UIEvent.LeaderChanged(it.pid))
+            }
         )
     }
 
@@ -35,7 +38,7 @@ fun SuccessTeamScreen(
             value = team.name.current ?: "",
             onValueChange = { uiCB.onEvent(TeamViewModel.UIEvent.NameChanged(it)) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text (text = stringResource(R.string.teamname)) },
+            label = { Text(text = stringResource(R.string.teamname)) },
             supportingText = { if (team.name.errorId != null) Text(stringResource(id = team.name.errorId)) },
             isError = team.name.errorId != null,
         )
@@ -46,17 +49,25 @@ fun SuccessTeamScreen(
             label = R.string.start_day,
             errorId = team.startDay.errorId
         )
-        OutlinedSpinnerField (
+        OutlinedSpinnerField(
             value = team.duration.current.toString(),
-            onValueChange = { try { val v : Int = it.toInt(); uiCB.onEvent(TeamViewModel.UIEvent.DurationChanged(v)) } catch (e:Exception) { } },
+            onValueChange = {
+                try {
+                    val v: Int = it.toInt(); uiCB.onEvent(TeamViewModel.UIEvent.DurationChanged(v))
+                } catch (e: Exception) {
+                }
+            },
             label = R.string.duration,
             option_views = stringArrayResource(id = R.array.durations),
             option_values = stringArrayResource(id = R.array.durations),
             errorId = team.duration.errorId,
         )
-        LeaderField (
+        LeaderField(
             value = team.leader.current,
-            onValueChange = { if (it) showDialog.value = true else uiCB.onEvent(TeamViewModel.UIEvent.LeaderChanged(null)) },
+            onValueChange = {
+                if (it) showDialog.value =
+                    true else uiCB.onEvent(TeamViewModel.UIEvent.LeaderChanged(null))
+            },
             label = R.string.leader,
             errorId = team.leader.errorId,
         )

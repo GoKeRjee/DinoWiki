@@ -17,10 +17,12 @@ interface PersonDao {
     fun getAll(): Flow<List<Person>>
 
     @Transaction
-    @Query("SELECT * "
-            + ", (SELECT COUNT(*) FROM teams T WHERE T.leaderId = P.pid) AS teamLeadingCount"
-            + ", (SELECT COUNT(*) FROM tpas TPA WHERE TPA.pid = P.pid) AS teamMemberCount"
-            + " FROM persons AS P ")
+    @Query(
+        "SELECT * "
+                + ", (SELECT COUNT(*) FROM teams T WHERE T.leaderId = P.pid) AS teamLeadingCount"
+                + ", (SELECT COUNT(*) FROM tpas TPA WHERE TPA.pid = P.pid) AS teamMemberCount"
+                + " FROM persons AS P "
+    )
     fun getAllDetailed(): Flow<List<PersonWithDetails>>
 
     @Query("SELECT * FROM persons WHERE pid = :id")

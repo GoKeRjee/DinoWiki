@@ -33,7 +33,7 @@ interface TeamDao {
     @Delete
     suspend fun removeTeamPerson(members: List<TeamPersonAssociation>)
 
-    @Query ("DELETE FROM tpas WHERE tid = :tid")
+    @Query("DELETE FROM tpas WHERE tid = :tid")
     fun deleteTeamPersons(tid: Long)
 
 }

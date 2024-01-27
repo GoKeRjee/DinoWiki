@@ -2,9 +2,7 @@ package fr.uha.hassenforder.android.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,7 +12,6 @@ import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
@@ -43,6 +40,7 @@ fun SwipeableItem(
                     }
                     false
                 }
+
                 DismissValue.DismissedToStart -> {
                     if (onDelete != null) {
                         onDelete()
@@ -50,6 +48,7 @@ fun SwipeableItem(
                     }
                     false
                 }
+
                 DismissValue.Default -> {
                     false
                 }
@@ -57,7 +56,11 @@ fun SwipeableItem(
         }
     )
     val directions: Set<DismissDirection> = when {
-        onEdit != null && onDelete != null -> setOf(DismissDirection.StartToEnd, DismissDirection.EndToStart)
+        onEdit != null && onDelete != null -> setOf(
+            DismissDirection.StartToEnd,
+            DismissDirection.EndToStart
+        )
+
         onEdit != null && onDelete == null -> setOf(DismissDirection.StartToEnd)
         onEdit == null && onDelete != null -> setOf(DismissDirection.EndToStart)
         else -> setOf()
@@ -78,7 +81,7 @@ fun SwipeableItem(
                 }
             )
             val icon = when (direction) {
-                DismissDirection.StartToEnd-> Icons.Default.Edit
+                DismissDirection.StartToEnd -> Icons.Default.Edit
                 DismissDirection.EndToStart -> Icons.Default.Delete
             }
             val scale = animateFloatAsState(
@@ -88,14 +91,14 @@ fun SwipeableItem(
                 DismissDirection.StartToEnd -> Alignment.CenterStart
                 DismissDirection.EndToStart -> Alignment.CenterEnd
             }
-            Box (
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(color)
                     .padding(start = 12.dp, end = 12.dp),
                 contentAlignment = alignment
             ) {
-                Icon (icon, contentDescription = "icon", modifier = Modifier.scale(scale.value))
+                Icon(icon, contentDescription = "icon", modifier = Modifier.scale(scale.value))
             }
         },
         dismissContent = content

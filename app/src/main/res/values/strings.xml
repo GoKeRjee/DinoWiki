@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Team 2023</string>
+    <string name="gender">gender</string>
+    <string name="type">type</string>
+    <string name="apprivoiser">apprivoiser</string>
+    <string name="picture">picture</string>
+    <string name="name">name</string>
+    <string name="regime">regime</string>
 </resources>

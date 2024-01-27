@@ -23,21 +23,21 @@ import fr.uha.hassenforder.team.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditPersonScreen (
+fun EditPersonScreen(
     vm: PersonViewModel = hiltViewModel(),
-    pid : Long,
+    pid: Long,
     back: () -> Unit,
 ) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(vm.isLaunched) {
-        if(!vm.isLaunched) {
+        if (!vm.isLaunched) {
             vm.edit(pid)
             vm.isLaunched = true
         }
     }
 
-    val menuEntries = listOf (
+    val menuEntries = listOf(
         AppMenuEntry.ActionEntry(
             title = R.string.save,
             icon = Icons.Filled.Save,
@@ -49,7 +49,12 @@ fun EditPersonScreen (
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { AppTitle(pageTitleId = R.string.title_person_edit, isModified = uiState.isModified()) },
+                title = {
+                    AppTitle(
+                        pageTitleId = R.string.title_person_edit,
+                        isModified = uiState.isModified()
+                    )
+                },
                 actions = { AppMenu(menuEntries) },
             )
         }
@@ -61,11 +66,13 @@ fun EditPersonScreen (
                 PersonViewModel.PersonState.Loading -> {
                     LoadingScreen(text = stringResource(R.string.loading))
                 }
+
                 PersonViewModel.PersonState.Error -> {
                     ErrorScreen(text = stringResource(R.string.error))
                 }
+
                 is PersonViewModel.PersonState.Success -> {
-                    SuccessPersonScreen(uiState, vm.uiCallback )
+                    SuccessPersonScreen(uiState, vm.uiCallback)
                 }
             }
         }

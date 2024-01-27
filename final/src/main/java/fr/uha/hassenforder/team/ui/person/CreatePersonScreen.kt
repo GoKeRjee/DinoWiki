@@ -25,21 +25,26 @@ import fr.uha.hassenforder.team.model.Person
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreatePersonScreen (
+fun CreatePersonScreen(
     vm: PersonViewModel = hiltViewModel(),
     back: () -> Unit,
 ) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(vm.isLaunched) {
-        if(!vm.isLaunched) {
-            val person = Person (firstname = "Michel", lastname = "Hassenforder", phone="0123456789", gender = Gender.BOY)
+        if (!vm.isLaunched) {
+            val person = Person(
+                firstname = "Michel",
+                lastname = "Hassenforder",
+                phone = "0123456789",
+                gender = Gender.BOY
+            )
             vm.create(person)
             vm.isLaunched = true
         }
     }
 
-    val menuEntries = listOf (
+    val menuEntries = listOf(
         AppMenuEntry.ActionEntry(
             title = R.string.save,
             icon = Icons.Filled.Save,
@@ -51,7 +56,12 @@ fun CreatePersonScreen (
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { AppTitle(pageTitleId = R.string.title_person_create, isModified = uiState.isModified()) },
+                title = {
+                    AppTitle(
+                        pageTitleId = R.string.title_person_create,
+                        isModified = uiState.isModified()
+                    )
+                },
                 actions = { AppMenu(menuEntries) },
             )
         }
@@ -63,11 +73,13 @@ fun CreatePersonScreen (
                 PersonViewModel.PersonState.Loading -> {
                     LoadingScreen(text = stringResource(R.string.loading))
                 }
+
                 PersonViewModel.PersonState.Error -> {
                     ErrorScreen(text = stringResource(R.string.error))
                 }
+
                 is PersonViewModel.PersonState.Success -> {
-                    SuccessPersonScreen(uiState, vm.uiCallback )
+                    SuccessPersonScreen(uiState, vm.uiCallback)
                 }
             }
         }

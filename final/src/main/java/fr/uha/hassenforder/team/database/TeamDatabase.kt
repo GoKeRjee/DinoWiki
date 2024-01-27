@@ -22,21 +22,21 @@ import fr.uha.hassenforder.team.model.TeamPersonAssociation
 )
 abstract class TeamDatabase : RoomDatabase() {
 
-    abstract fun getPersonDao () : PersonDao
+    abstract fun getPersonDao(): PersonDao
 
-    abstract fun getTeamDao () : TeamDao
+    abstract fun getTeamDao(): TeamDao
 
     companion object {
-        private lateinit var instance : TeamDatabase
+        private lateinit var instance: TeamDatabase
 
         @Synchronized
-        fun create (context : Context) : TeamDatabase {
+        fun create(context: Context): TeamDatabase {
             instance = Room.databaseBuilder(context, TeamDatabase::class.java, "team.db").build()
             return instance
         }
 
         @Synchronized
-        fun get () : TeamDatabase {
+        fun get(): TeamDatabase {
             return instance
         }
     }

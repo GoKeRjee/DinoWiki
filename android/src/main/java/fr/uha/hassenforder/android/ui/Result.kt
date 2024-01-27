@@ -1,6 +1,5 @@
 package fr.uha.hassenforder.android.ui
 
-import java.util.concurrent.Flow
 /*
 sealed interface Result<out T> {
     data class Success<T>(val data: T) : Result<T>

@@ -13,9 +13,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ListTeamsViewModel @Inject constructor (
+class ListTeamsViewModel @Inject constructor(
     private val repository: TeamRepository
-): ViewModel() {
+) : ViewModel() {
 
     val teams: Flow<List<Team>> = repository.getAll()
 
@@ -23,13 +23,13 @@ class ListTeamsViewModel @Inject constructor (
         repository.delete(team)
     }
 
-    fun populateDatabase () = viewModelScope.launch {
+    fun populateDatabase() = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             FeedDatabase().populate()
         }
     }
 
-    fun clearDatabase () = viewModelScope.launch {
+    fun clearDatabase() = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             FeedDatabase().clear()
         }
