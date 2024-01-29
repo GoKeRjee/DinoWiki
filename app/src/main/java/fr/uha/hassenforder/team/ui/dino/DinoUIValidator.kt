@@ -9,45 +9,45 @@ import fr.uha.hassenforder.team.model.Type
 
 object DinoUIValidator {
 
-    fun validateNameChange(newValue: String) : Int? {
+    fun validateNameChange(newValue: String): Int? {
         return when {
-            newValue.isEmpty()  ->  R.string.value_empty
-            newValue.isBlank()  ->  R.string.value_blank
-            newValue.length < 3 ->  R.string.value_too_short
-            newValue.length > 12 ->  R.string.value_too_long
+            newValue.isEmpty() -> R.string.value_empty
+            newValue.isBlank() -> R.string.value_blank
+            newValue.length < 3 -> R.string.value_too_short
+            newValue.length > 12 -> R.string.value_too_long
             else -> null
         }
     }
 
-    fun validateGenderChange(newValue: Gender?) : Int? {
+    fun validateGenderChange(newValue: Gender?): Int? {
         return when {
-            newValue == null ->  R.string.gender_must_set
+            newValue == null -> R.string.gender_must_set
             else -> null
         }
     }
 
-    fun validateTypeChange(newValue: Type?) : Int? {
+    fun validateTypeChange(newValue: Type?): Int? {
         return when {
-            newValue == null ->  R.string.type_must_set
+            newValue == null -> R.string.type_must_set
             else -> null
         }
     }
 
-    fun validateRegimeChange(newValue: Regime?) : Int? {
+    fun validateRegimeChange(newValue: Regime?): Int? {
         return when {
-            newValue == null ->  R.string.regime_must_set
+            newValue == null -> R.string.regime_must_set
             else -> null
         }
     }
 
-    fun validateApprivoiserChange(newValue: Apprivoiser?) : Int? {
+    fun validateApprivoiserChange(newValue: Apprivoiser?): Int? {
         return when {
-            newValue == null ->  R.string.apprivoiser_must_set
+            newValue == null -> R.string.apprivoiser_must_set
             else -> null
         }
     }
 
-    fun validatePictureChange(newValue: Uri?) : Int? {
+    fun validatePictureChange(newValue: Uri?): Int? {
         return null
     }
 

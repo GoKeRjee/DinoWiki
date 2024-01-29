@@ -5,7 +5,6 @@ import fr.uha.hassenforder.team.model.Dino
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 
 
 class DinoRepository(private val dinoDao: DinoDao) {
@@ -21,7 +20,7 @@ class DinoRepository(private val dinoDao: DinoDao) {
         return@withContext dinoDao.create(dino)
     }
 
-    suspend fun update(dino: Dino): Long = withContext(Dispatchers.IO) {
+    suspend fun update(oldDino: Dino, dino: Dino): Long = withContext(Dispatchers.IO) {
         return@withContext dinoDao.update(dino)
     }
 

@@ -9,10 +9,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dagger.hilt.android.AndroidEntryPoint
 import fr.uha.hassenforder.team.database.TeamDatabase
-import fr.uha.hassenforder.team.ui.person.CreateDinoScreen
+import fr.uha.hassenforder.team.ui.dino.ListDinosScreen
 import fr.uha.hassenforder.team.ui.theme.Team2023Theme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +24,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    CreateDinoScreen()
+                    ListDinosScreen()
                 }
             }
         }

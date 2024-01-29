@@ -8,4 +8,7 @@
     <string name="regime">regime</string>
     <string name="loading">Loading the content</string>
     <string name="error">Error loading content</string>
+    <string name="save">save</string>
+    <string name="dino_create">Create Dino</string>
+    <string name="dino_list">List of Dinos</string>
 </resources>

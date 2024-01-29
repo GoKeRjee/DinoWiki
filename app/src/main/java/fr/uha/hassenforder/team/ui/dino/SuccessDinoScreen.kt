@@ -1,4 +1,4 @@
-package fr.uha.hassenforder.team.ui.person
+package fr.uha.hassenforder.team.ui.dino
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +13,6 @@ import fr.uha.hassenforder.team.model.Apprivoiser
 import fr.uha.hassenforder.team.model.Gender
 import fr.uha.hassenforder.team.model.Regime
 import fr.uha.hassenforder.team.model.Type
-import fr.uha.hassenforder.team.ui.dino.DinoViewModel
 
 @Composable
 fun SuccessDinoScreen(
@@ -22,15 +21,15 @@ fun SuccessDinoScreen(
 ) {
     Column(
     ) {
-    OutlinedTextField(
+        OutlinedTextField(
             value = dino.nameState.current ?: "",
             onValueChange = { uiCB.onEvent(DinoViewModel.UIEvent.NameChanged(it)) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text (stringResource(id = R.string.name)) },
+            label = { Text(stringResource(id = R.string.name)) },
             supportingText = { if (dino.nameState.errorId != null) Text(stringResource(id = dino.nameState.errorId)) },
             isError = dino.nameState.errorId != null,
 
-        )
+            )
         OutlinedEnumRadioGroup(
             value = dino.genderState.current,
             onValueChange = { uiCB.onEvent(DinoViewModel.UIEvent.GenderChanged(Gender.valueOf(it))) },
@@ -57,7 +56,15 @@ fun SuccessDinoScreen(
         )
         OutlinedEnumRadioGroup(
             value = dino.apprivoiserState.current,
-            onValueChange = { uiCB.onEvent(DinoViewModel.UIEvent.ApprivoiserChanged(Apprivoiser.valueOf(it))) },
+            onValueChange = {
+                uiCB.onEvent(
+                    DinoViewModel.UIEvent.ApprivoiserChanged(
+                        Apprivoiser.valueOf(
+                            it
+                        )
+                    )
+                )
+            },
             modifier = Modifier.fillMaxWidth(),
             items = Apprivoiser.values(),
             labelId = R.string.apprivoiser,

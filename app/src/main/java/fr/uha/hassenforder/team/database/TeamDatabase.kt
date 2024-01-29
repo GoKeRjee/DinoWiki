@@ -15,7 +15,7 @@ import fr.uha.hassenforder.team.model.Dino
 )
 abstract class TeamDatabase : RoomDatabase() {
 
-    abstract val dinoDAO : DinoDao
+    abstract val dinoDao: DinoDao
 
     companion object {
         private lateinit var instance: TeamDatabase

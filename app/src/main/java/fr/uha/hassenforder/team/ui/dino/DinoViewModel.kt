@@ -101,16 +101,16 @@ class DinoViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DinoState.Loading)
 
-    data class DinoUIState (
+    data class DinoUIState(
         val initialState: DinoState,
-        val nameState : FieldWrapper<String>,
-        val genderState : FieldWrapper<Gender?>,
-        val typeState : FieldWrapper<Type?>,
-        val regimeState : FieldWrapper<Regime?>,
-        val apprivoiserState : FieldWrapper<Apprivoiser?>,
-        val pictureState : FieldWrapper<Uri?>,
+        val nameState: FieldWrapper<String>,
+        val genderState: FieldWrapper<Gender?>,
+        val typeState: FieldWrapper<Type?>,
+        val regimeState: FieldWrapper<Regime?>,
+        val apprivoiserState: FieldWrapper<Apprivoiser?>,
+        val pictureState: FieldWrapper<Uri?>,
     ) {
-        private fun _isModified (): Boolean? {
+        private fun _isModified(): Boolean? {
             if (initialState !is DinoState.Success) return null
             if (nameState.current != initialState.dino.name) return true
             if (genderState.current != initialState.dino.gender) return true
@@ -122,7 +122,7 @@ class DinoViewModel @Inject constructor(
             return false
         }
 
-        private fun _hasError (): Boolean? {
+        private fun _hasError(): Boolean? {
             if (nameState.errorId != null) return true
             if (genderState.errorId != null) return true
             if (typeState.errorId != null) return true
@@ -132,23 +132,29 @@ class DinoViewModel @Inject constructor(
             return false
         }
 
-        fun isModified() : Boolean {
+        fun isModified(): Boolean {
             val isModified = _isModified()
             if (isModified == null) return false
             return isModified
         }
 
-        fun isSavable (): Boolean {
+        fun isSavable(): Boolean {
             val hasError = _hasError()
             if (hasError == null) return false
             val isModified = _isModified()
             if (isModified == null) return false
-            return ! hasError && isModified
+            return !hasError && isModified
         }
     }
 
-    val uiState : StateFlow<DinoUIState> = combine (
-        _initialDinoState, _nameState, _genderState, _typeState, _regimeState, _apprivoiserState, _pictureState
+    val uiState: StateFlow<DinoUIState> = combine(
+        _initialDinoState,
+        _nameState,
+        _genderState,
+        _typeState,
+        _regimeState,
+        _apprivoiserState,
+        _pictureState
     ) { i, n, g, t, r, a, p -> DinoUIState(i, n, g, t, r, a, p) }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -164,56 +170,90 @@ class DinoViewModel @Inject constructor(
     )
 
     sealed class UIEvent {
-        data class NameChanged(val newValue: String): UIEvent()
-        data class GenderChanged(val newValue: Gender): UIEvent()
-        data class TypeChanged(val newValue: Type): UIEvent()
-        data class RegimeChanged(val newValue: Regime): UIEvent()
-        data class ApprivoiserChanged(val newValue: Apprivoiser): UIEvent()
-        data class PictureChanged(val newValue: Uri?): UIEvent()
+        data class NameChanged(val newValue: String) : UIEvent()
+        data class GenderChanged(val newValue: Gender) : UIEvent()
+        data class TypeChanged(val newValue: Type) : UIEvent()
+        data class RegimeChanged(val newValue: Regime) : UIEvent()
+        data class ApprivoiserChanged(val newValue: Apprivoiser) : UIEvent()
+        data class PictureChanged(val newValue: Uri?) : UIEvent()
     }
 
-    data class DinoUICallback (
-        val onEvent : (UIEvent) -> Unit,
+    data class DinoUICallback(
+        val onEvent: (UIEvent) -> Unit,
     )
 
-    val uiCallback = DinoUICallback (
+    val uiCallback = DinoUICallback(
         onEvent = {
             viewModelScope.launch {
                 when (it) {
-                    is UIEvent.NameChanged -> _nameState.emit(FieldWrapper.buildName(uiState.value, it.newValue))
-                    is UIEvent.GenderChanged -> _genderState.emit(FieldWrapper.buildGender(uiState.value, it.newValue))
-                    is UIEvent.TypeChanged -> _typeState.emit(FieldWrapper.buildType(uiState.value, it.newValue))
-                    is UIEvent.RegimeChanged -> _regimeState.emit(FieldWrapper.buildRegime(uiState.value, it.newValue))
-                    is UIEvent.ApprivoiserChanged -> _apprivoiserState.emit(FieldWrapper.buildApprivoiser(uiState.value, it.newValue))
-                    is UIEvent.PictureChanged -> _pictureState.emit(FieldWrapper.buildPicture(uiState.value, it.newValue))
+                    is UIEvent.NameChanged -> _nameState.emit(
+                        FieldWrapper.buildName(
+                            uiState.value,
+                            it.newValue
+                        )
+                    )
+
+                    is UIEvent.GenderChanged -> _genderState.emit(
+                        FieldWrapper.buildGender(
+                            uiState.value,
+                            it.newValue
+                        )
+                    )
+
+                    is UIEvent.TypeChanged -> _typeState.emit(
+                        FieldWrapper.buildType(
+                            uiState.value,
+                            it.newValue
+                        )
+                    )
+
+                    is UIEvent.RegimeChanged -> _regimeState.emit(
+                        FieldWrapper.buildRegime(
+                            uiState.value,
+                            it.newValue
+                        )
+                    )
+
+                    is UIEvent.ApprivoiserChanged -> _apprivoiserState.emit(
+                        FieldWrapper.buildApprivoiser(
+                            uiState.value,
+                            it.newValue
+                        )
+                    )
+
+                    is UIEvent.PictureChanged -> _pictureState.emit(
+                        FieldWrapper.buildPicture(
+                            uiState.value,
+                            it.newValue
+                        )
+                    )
                 }
             }
         }
     )
 
-    fun edit (pid : Long) = viewModelScope.launch {
+    fun edit(pid: Long) = viewModelScope.launch {
         _id.emit(pid)
     }
 
-    fun create(dino : Dino) = viewModelScope.launch {
-        val pid : Long = repository.create(dino)
+    fun create(dino: Dino) = viewModelScope.launch {
+        val pid: Long = repository.create(dino)
         _id.emit(pid)
     }
-    /*
-        fun save() = viewModelScope.launch {
-            if (_initialDinoState.value !is DinoState.Success) return@launch
-            val oldDino = _initialDinoState.value as DinoState.Success
-            val dino = Dino (
-                _id.value,
-                _nameState.value.current!!,
-                _genderState.value.current!!,
-                _typeState.value.current!!,
-                _regimeState.value.current!!,
-                _apprivoiserState.value.current!!,
-    //            _pictureState.value.current
-            )
-            repository.update(oldDino.dino, dino)
-        }
-    */
+
+    fun save() = viewModelScope.launch {
+        if (_initialDinoState.value !is DinoState.Success) return@launch
+        val oldDino = _initialDinoState.value as DinoState.Success
+        val dino = Dino(
+            _id.value,
+            _nameState.value.current!!,
+            _genderState.value.current!!,
+            _typeState.value.current!!,
+            _regimeState.value.current!!,
+            _apprivoiserState.value.current!!,
+            //            _pictureState.value.current
+        )
+        repository.update(oldDino.dino, dino)
+    }
 }
 
