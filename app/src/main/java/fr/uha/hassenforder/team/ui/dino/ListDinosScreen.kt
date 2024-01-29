@@ -1,8 +1,11 @@
 package fr.uha.hassenforder.team.ui.dino
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -19,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -96,22 +100,31 @@ fun DinoItem(dino: Dino) {
 
     ListItem(
         headlineContent = {
-            Row() {
-                Text(dino.name, modifier = Modifier.padding(end = 4.dp))
-                Text(text = dino.type.name, modifier = Modifier.padding(end = 4.dp))
-                Text(text = dino.regime.name, modifier = Modifier.padding(end = 4.dp))
-                Text(text = dino.apprivoiser.name, modifier = Modifier.padding(end = 4.dp))
+            Column() { // Utilisez Column pour empiler les éléments verticalement
+                Row(verticalAlignment = Alignment.Top) { // Alignez le nom avec le coin supérieur droit de l'image
+                    AsyncImage(
+                        model = dino.picture,
+                        modifier = Modifier.size(96.dp), // Taille augmentée pour l'image
+                        contentDescription = "Selected image",
+                        error = rememberVectorPainter(Icons.Outlined.Error),
+                        placeholder = rememberVectorPainter(Icons.Outlined.Casino),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp)) // Espacement entre l'image et le texte
+                    Column() { // Colonne pour le texte à droite de l'image
+                        Text(
+                            "${dino.type.name}, ${dino.regime.name}",
+                            modifier = Modifier.padding(end = 4.dp)
+                        ) // Type et régime
+                        Text(dino.name, modifier = Modifier.padding(end = 4.dp)) // Nom
+                        Text(
+                            "Apprivoisable: ${dino.apprivoiser.name}",
+                            modifier = Modifier.padding(end = 4.dp)
+                        ) // État d'apprivoisement
+                    }
+                }
             }
         },
-        leadingContent = {
-            AsyncImage(
-                model = dino.picture,
-                modifier = Modifier.size(64.dp),
-                contentDescription = "Selected image",
-                error = rememberVectorPainter(Icons.Outlined.Error),
-                placeholder = rememberVectorPainter(Icons.Outlined.Casino),
-            )
-        },
+        leadingContent = { },
         trailingContent = {
             Icon(imageVector = gender, contentDescription = null, modifier = Modifier.size(48.dp))
         },
