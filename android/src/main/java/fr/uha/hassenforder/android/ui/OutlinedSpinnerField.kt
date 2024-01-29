@@ -61,6 +61,33 @@ fun OutlinedSpinnerField(
     }
 }
 
+@Composable
+fun <T : Enum<T>> OutlinedSpinnerFieldEnum(
+    value: T?,
+    onValueChange: (T) -> Unit,
+    modifier: Modifier = Modifier,
+    enumValues: Array<T>,
+    labelId: Int? = null,
+    errorId: Int? = null,
+    displayTextProvider: (T) -> String = { it.name }
+) {
+    val optionViews = enumValues.map(displayTextProvider).toTypedArray()
+    val optionValues = enumValues.map { it.name }.toTypedArray()
+    val selectedIndex = enumValues.indexOf(value)
+
+    OutlinedSpinnerField(
+        value = if (selectedIndex != -1) optionViews[selectedIndex] else optionViews[0],
+        onValueChange = { newValue ->
+            enumValues.find { it.name == newValue }?.let { onValueChange(it) }
+        },
+        modifier = modifier,
+        label = labelId ?: 0,
+        option_views = optionViews,
+        option_values = optionValues,
+        errorId = errorId
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun OutlinedSpinnerFieldPreview() {

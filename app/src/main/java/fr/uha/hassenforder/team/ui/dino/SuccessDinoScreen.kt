@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import fr.uha.hassenforder.android.ui.OutlinedEnumRadioGroup
+import fr.uha.hassenforder.android.ui.OutlinedSpinnerFieldEnum
 import fr.uha.hassenforder.android.ui.PictureField
 import fr.uha.hassenforder.team.R
 import fr.uha.hassenforder.team.TeamFileProvider
@@ -43,19 +44,19 @@ fun SuccessDinoScreen(
             labelId = R.string.gender,
             errorId = dino.genderState.errorId,
         )
-        OutlinedEnumRadioGroup(
+        OutlinedSpinnerFieldEnum(
             value = dino.typeState.current,
-            onValueChange = { uiCB.onEvent(DinoViewModel.UIEvent.TypeChanged(Type.valueOf(it))) },
+            onValueChange = { uiCB.onEvent(DinoViewModel.UIEvent.TypeChanged(it)) },
             modifier = Modifier.fillMaxWidth(),
-            items = Type.values(),
+            enumValues = Type.values(),
             labelId = R.string.type,
             errorId = dino.typeState.errorId,
         )
-        OutlinedEnumRadioGroup(
+        OutlinedSpinnerFieldEnum(
             value = dino.regimeState.current,
-            onValueChange = { uiCB.onEvent(DinoViewModel.UIEvent.RegimeChanged(Regime.valueOf(it))) },
+            onValueChange = { uiCB.onEvent(DinoViewModel.UIEvent.RegimeChanged(it)) },
             modifier = Modifier.fillMaxWidth(),
-            items = Regime.values(),
+            enumValues = Regime.values(),
             labelId = R.string.regime,
             errorId = dino.regimeState.errorId,
         )
