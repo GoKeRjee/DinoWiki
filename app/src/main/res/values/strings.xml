@@ -3,7 +3,6 @@
     <string name="gender">gender</string>
     <string name="type">type</string>
     <string name="apprivoiser">apprivoiser</string>
-    <string name="picture">picture</string>
     <string name="name">name</string>
     <string name="regime">regime</string>
     <string name="loading">Loading the content</string>
@@ -11,4 +10,14 @@
     <string name="save">save</string>
     <string name="dino_create">Create Dino</string>
     <string name="dino_list">List of Dinos</string>
+    <string name="action_dinos">dinos route</string>
+    <string name="action_teams">teams route</string>
+    <string name="dino_edit">Dino edit</string>
+    <string name="action_dino_create">Create Dino</string>
+    <string name="action_dino_edit">Edit Dino</string>
+    <string name="populate">Populate</string>
+    <string name="clean">clean</string>
+    <string name="picture">Picture</string>
+
+
 </resources>

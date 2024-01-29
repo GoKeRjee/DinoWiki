@@ -7,8 +7,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fr.uha.hassenforder.team.database.DinoDao
+import fr.uha.hassenforder.team.database.TeamDao
 import fr.uha.hassenforder.team.database.TeamDatabase
 import fr.uha.hassenforder.team.repository.DinoRepository
+import fr.uha.hassenforder.team.repository.TeamRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,13 +35,24 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providePersonDao(db: TeamDatabase) = db.dinoDao
+    fun provideDinoDao(db: TeamDatabase) = db.dinoDao
 
     @Singleton
     @Provides
-    fun providePersonRepository(
+    fun provideTeamDao(db: TeamDatabase) = db.teamDao
+
+    @Singleton
+    @Provides
+    fun provideDinoRepository(
 //        dispatcher: CoroutineDispatcher,
         dinoDao: DinoDao
     ) = DinoRepository(dinoDao)
+
+    @Singleton
+    @Provides
+    fun provideTeamRepository(
+//        dispatcher: CoroutineDispatcher,
+        teamDao: TeamDao
+    ) = TeamRepository(teamDao)
 
 }

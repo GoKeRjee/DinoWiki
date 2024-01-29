@@ -1,5 +1,6 @@
 package fr.uha.hassenforder.team.model
 
+import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,6 +12,6 @@ data class Dino(
     val gender: Gender,
     val type: Type,
     val regime: Regime,
-    val apprivoiser: Apprivoiser
-    //val picture : Uri? = null
+    val apprivoiser: Apprivoiser,
+    val picture: Uri? = null
 )

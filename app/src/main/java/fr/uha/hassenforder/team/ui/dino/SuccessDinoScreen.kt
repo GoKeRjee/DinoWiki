@@ -6,9 +6,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import fr.uha.hassenforder.android.ui.OutlinedEnumRadioGroup
+import fr.uha.hassenforder.android.ui.PictureField
 import fr.uha.hassenforder.team.R
+import fr.uha.hassenforder.team.TeamFileProvider
 import fr.uha.hassenforder.team.model.Apprivoiser
 import fr.uha.hassenforder.team.model.Gender
 import fr.uha.hassenforder.team.model.Regime
@@ -19,6 +22,8 @@ fun SuccessDinoScreen(
     dino: DinoViewModel.DinoUIState,
     uiCB: DinoViewModel.DinoUICallback
 ) {
+    val context = LocalContext.current
+
     Column(
     ) {
         OutlinedTextField(
@@ -70,11 +75,14 @@ fun SuccessDinoScreen(
             labelId = R.string.apprivoiser,
             errorId = dino.apprivoiserState.errorId,
         )
-        /*
-        Image(
-            painter = rememberAsyncImagePainter(dino.picture),
-            contentDescription = stringResource(R.string.picture)
+        PictureField(
+            value = dino.pictureState.current,
+            onValueChange = { uiCB.onEvent(DinoViewModel.UIEvent.PictureChanged(it)) },
+            newImageUriProvider = { TeamFileProvider.getImageUri(context) },
+            modifier = Modifier.fillMaxWidth(),
+            labelId = R.string.picture,
+            errorId = dino.pictureState.errorId
         )
-         */
+
     }
 }

@@ -8,7 +8,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Adb
+import androidx.compose.material.icons.outlined.Casino
 import androidx.compose.material.icons.outlined.DoNotDisturb
+import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -19,10 +21,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import fr.uha.hassenforder.android.ui.AppMenu
 import fr.uha.hassenforder.android.ui.AppMenuEntry
 import fr.uha.hassenforder.android.ui.AppTitle
@@ -38,11 +42,18 @@ import fr.uha.hassenforder.team.ui.theme.Team2023Theme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListDinosScreen(
-    vm: ListDinosViewModel = hiltViewModel()
-) {
+    vm: ListDinosViewModel = hiltViewModel(),
+    onCreate: () -> Unit,
+    onEdit: (p: Dino) -> Unit,
+
+    ) {
     val dinos = vm.dinos.collectAsStateWithLifecycle(initialValue = emptyList())
 
-    val menuEntries = emptyList<AppMenuEntry>()
+    val menuEntries = listOf(
+        AppMenuEntry.OverflowEntry(title = R.string.populate, listener = { vm.feed() }),
+        AppMenuEntry.OverflowEntry(title = R.string.clean, listener = { vm.clean() })
+    )
+
 
     Scaffold(
         topBar = {
@@ -54,7 +65,7 @@ fun ListDinosScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
+            FloatingActionButton(onClick = onCreate) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = null)
             }
         }
@@ -65,7 +76,7 @@ fun ListDinosScreen(
                 key = { dino -> dino.pid }
             ) { item ->
                 SwipeableItem(
-                    onEdit = {},
+                    onEdit = { onEdit(item) },
                     onDelete = {},
                 ) {
                     DinoItem(item)
@@ -92,6 +103,15 @@ fun DinoItem(dino: Dino) {
                 Text(text = dino.apprivoiser.name, modifier = Modifier.padding(end = 4.dp))
             }
         },
+        leadingContent = {
+            AsyncImage(
+                model = dino.picture,
+                modifier = Modifier.size(64.dp),
+                contentDescription = "Selected image",
+                error = rememberVectorPainter(Icons.Outlined.Error),
+                placeholder = rememberVectorPainter(Icons.Outlined.Casino),
+            )
+        },
         trailingContent = {
             Icon(imageVector = gender, contentDescription = null, modifier = Modifier.size(48.dp))
         },
@@ -102,6 +122,16 @@ fun DinoItem(dino: Dino) {
 @Composable
 fun ListPreview() {
     Team2023Theme {
-        DinoItem(Dino(0, "DANAZOR", Gender.NO, Type.AERIEN, Regime.CARNIVORE, Apprivoiser.INCONNU))
+        DinoItem(
+            Dino(
+                0,
+                "DANAZOR",
+                Gender.NO,
+                Type.AERIEN,
+                Regime.CARNIVORE,
+                Apprivoiser.INCONNU,
+                null
+            )
+        )
     }
 }

@@ -92,8 +92,7 @@ class DinoViewModel @Inject constructor(
                 _typeState.emit(FieldWrapper.buildType(uiState.value, p.type))
                 _regimeState.emit(FieldWrapper.buildRegime(uiState.value, p.regime))
                 _apprivoiserState.emit(FieldWrapper.buildApprivoiser(uiState.value, p.apprivoiser))
-//                _pictureState.emit(FieldWrapper.buildPicture(uiState.value, p.picture))
-                _pictureState.emit(FieldWrapper.buildPicture(uiState.value, null))
+                _pictureState.emit(FieldWrapper.buildPicture(uiState.value, p.picture))
                 DinoState.Success(dino = p)
             } else {
                 DinoState.Error
@@ -117,7 +116,7 @@ class DinoViewModel @Inject constructor(
             if (typeState.current != initialState.dino.type) return true
             if (regimeState.current != initialState.dino.regime) return true
             if (apprivoiserState.current != initialState.dino.apprivoiser) return true
-//            if (pictureState.current != initialState.person.picture) return true
+            if (pictureState.current != initialState.dino.picture) return true
             if (pictureState.current != null) return true
             return false
         }
@@ -251,7 +250,7 @@ class DinoViewModel @Inject constructor(
             _typeState.value.current!!,
             _regimeState.value.current!!,
             _apprivoiserState.value.current!!,
-            //            _pictureState.value.current
+            _pictureState.value.current
         )
         repository.update(oldDino.dino, dino)
     }

@@ -20,35 +20,18 @@ import fr.uha.hassenforder.android.ui.AppTitle
 import fr.uha.hassenforder.android.ui.ErrorScreen
 import fr.uha.hassenforder.android.ui.LoadingScreen
 import fr.uha.hassenforder.team.R
-import fr.uha.hassenforder.team.model.Apprivoiser
-import fr.uha.hassenforder.team.model.Dino
-import fr.uha.hassenforder.team.model.Gender
-import fr.uha.hassenforder.team.model.Regime
-import fr.uha.hassenforder.team.model.Type
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateDinoScreen(
+fun EditDinoScreen(
     vm: DinoViewModel = hiltViewModel(),
+    pid: Long,
     back: () -> Unit
 ) {
     val state by vm.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = vm.isLaunched) {
-        if (!vm.isLaunched) {
-            val dino = Dino(
-                0,
-                "ALBINOSAURE",
-                Gender.NO,
-                Type.AERIEN,
-                Regime.CARNIVORE,
-                Apprivoiser.INCONNU,
-                null
-            )
-            vm.create(dino)
-            vm.isLaunched = true
-        }
+    LaunchedEffect(Unit) {
+        vm.edit(pid)
     }
 
     val menuEntries = listOf(
@@ -59,13 +42,14 @@ fun CreateDinoScreen(
             listener = { vm.save() }
         )
     )
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     AppTitle(
                         appNameId = R.string.app_name,
-                        pageTitleId = R.string.dino_create,
+                        pageTitleId = R.string.dino_edit,
                         isModified = state.isModified()
                     )
                 },
@@ -86,7 +70,6 @@ fun CreateDinoScreen(
 
                 is DinoViewModel.DinoState.Success ->
                     SuccessDinoScreen(state, vm.uiCallback)
-
             }
         }
     }
