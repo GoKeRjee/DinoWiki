@@ -254,5 +254,6 @@ class DinoViewModel @Inject constructor(
         )
         repository.update(oldDino.dino, dino)
     }
+
 }
 

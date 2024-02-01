@@ -1,5 +1,6 @@
 package fr.uha.hassenforder.team.navigation
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -11,6 +12,7 @@ import fr.uha.hassenforder.team.model.Dino
 import fr.uha.hassenforder.team.ui.dino.CreateDinoScreen
 import fr.uha.hassenforder.team.ui.dino.EditDinoScreen
 import fr.uha.hassenforder.team.ui.dino.ListDinosScreen
+import fr.uha.hassenforder.team.ui.dino.ListDinosViewModel
 
 private sealed class DinoNavGraphEntry(
     val route: String,
@@ -46,9 +48,12 @@ fun NavGraphBuilder.DinosNavGraph(
 ) {
     navigation(DinoNavGraphEntry.Dinos.route, BottomBarNavGraphEntry.Dinos.route) {
         composable(route = DinoNavGraphEntry.Dinos.route) {
+            val listDinosViewModel: ListDinosViewModel = hiltViewModel()
+
             ListDinosScreen(
                 onCreate = { navController.navigate(DinoNavGraphEntry.Create.route) },
-                onEdit = { p: Dino -> navController.navigate(DinoNavGraphEntry.Edit.to(p.pid)) }
+                onEdit = { p: Dino -> navController.navigate(DinoNavGraphEntry.Edit.to(p.pid)) },
+                onDelete = { dino -> listDinosViewModel.delete(dino) }
             )
         }
         composable(route = DinoNavGraphEntry.Create.route) {

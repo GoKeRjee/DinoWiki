@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,12 +35,9 @@ import fr.uha.hassenforder.android.ui.AppMenuEntry
 import fr.uha.hassenforder.android.ui.AppTitle
 import fr.uha.hassenforder.android.ui.SwipeableItem
 import fr.uha.hassenforder.team.R
-import fr.uha.hassenforder.team.model.Apprivoiser
 import fr.uha.hassenforder.team.model.Dino
+import fr.uha.hassenforder.team.model.DinoWithDetails
 import fr.uha.hassenforder.team.model.Gender
-import fr.uha.hassenforder.team.model.Regime
-import fr.uha.hassenforder.team.model.Type
-import fr.uha.hassenforder.team.ui.theme.Team2023Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,8 +45,9 @@ fun ListDinosScreen(
     vm: ListDinosViewModel = hiltViewModel(),
     onCreate: () -> Unit,
     onEdit: (p: Dino) -> Unit,
+    onDelete: (p: Dino) -> Unit
 
-    ) {
+) {
     val dinos = vm.dinos.collectAsStateWithLifecycle(initialValue = emptyList())
 
     val menuEntries = listOf(
@@ -77,11 +74,11 @@ fun ListDinosScreen(
         LazyColumn(modifier = Modifier.padding(innerPadding)) {
             items(
                 items = dinos.value,
-                key = { dino -> dino.pid }
+                key = { dino -> dino.dino.pid }
             ) { item ->
                 SwipeableItem(
-                    onEdit = { onEdit(item) },
-                    onDelete = {},
+                    onEdit = { onEdit(item.dino) },
+                    onDelete = { onDelete(item.dino) },
                 ) {
                     DinoItem(item)
                 }
@@ -92,34 +89,34 @@ fun ListDinosScreen(
 }
 
 @Composable
-fun DinoItem(dino: Dino) {
-    val gender: ImageVector = when (dino.gender) {
+fun DinoItem(dino: DinoWithDetails) {
+    val gender: ImageVector = when (dino.dino.gender) {
         Gender.NO -> Icons.Outlined.DoNotDisturb
         Gender.MIXTE -> Icons.Outlined.Adb
     }
 
     ListItem(
         headlineContent = {
-            Column() { // Utilisez Column pour empiler les éléments verticalement
-                Row(verticalAlignment = Alignment.Top) { // Alignez le nom avec le coin supérieur droit de l'image
+            Column() {
+                Row(verticalAlignment = Alignment.Top) {
                     AsyncImage(
-                        model = dino.picture,
-                        modifier = Modifier.size(96.dp), // Taille augmentée pour l'image
+                        model = dino.dino.picture,
+                        modifier = Modifier.size(96.dp),
                         contentDescription = "Selected image",
                         error = rememberVectorPainter(Icons.Outlined.Error),
                         placeholder = rememberVectorPainter(Icons.Outlined.Casino),
                     )
-                    Spacer(modifier = Modifier.width(8.dp)) // Espacement entre l'image et le texte
-                    Column() { // Colonne pour le texte à droite de l'image
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Column() {
                         Text(
-                            "${dino.type.name}, ${dino.regime.name}",
+                            "${dino.dino.type.name}, ${dino.dino.regime.name}",
                             modifier = Modifier.padding(end = 4.dp)
-                        ) // Type et régime
-                        Text(dino.name, modifier = Modifier.padding(end = 4.dp)) // Nom
+                        )
+                        Text(dino.dino.name, modifier = Modifier.padding(end = 4.dp))
                         Text(
-                            "Apprivoisable: ${dino.apprivoiser.name}",
+                            "Apprivoisable: ${dino.dino.apprivoiser.name}",
                             modifier = Modifier.padding(end = 4.dp)
-                        ) // État d'apprivoisement
+                        )
                     }
                 }
             }
@@ -129,22 +126,4 @@ fun DinoItem(dino: Dino) {
             Icon(imageVector = gender, contentDescription = null, modifier = Modifier.size(48.dp))
         },
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ListPreview() {
-    Team2023Theme {
-        DinoItem(
-            Dino(
-                0,
-                "DANAZOR",
-                Gender.NO,
-                Type.AERIEN,
-                Regime.CARNIVORE,
-                Apprivoiser.INCONNU,
-                null
-            )
-        )
-    }
 }

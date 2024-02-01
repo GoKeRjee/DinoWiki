@@ -4,8 +4,11 @@ import fr.uha.hassenforder.team.model.Apprivoiser
 import fr.uha.hassenforder.team.model.Dino
 import fr.uha.hassenforder.team.model.Gender
 import fr.uha.hassenforder.team.model.Regime
+import fr.uha.hassenforder.team.model.Team
 import fr.uha.hassenforder.team.model.Type
+import java.util.Date
 import java.util.Random
+
 
 class FeedDatabase {
 
@@ -29,18 +32,18 @@ class FeedDatabase {
         return ids
     }
 
-    /*
-        private suspend fun feedTeams(pids: LongArray) {
-            val dao: TeamDao = TeamDatabase.get().getTeamDao()
-            val team = getRandomTeam(pids.get(0))
-            val tid = dao.create(team)
-            dao.addTeamDino(TeamDinoAssociation(tid, pids.get(0)))
-            dao.addTeamDino(TeamDinoAssociation(tid, pids.get(3)))
-        }
-    */
+
+    private suspend fun feedTeams(pids: LongArray) {
+        val dao: TeamDao = TeamDatabase.get().teamDao
+        val team = getRandomTeam()
+        val tid = dao.create(team)
+        //dao.addTeamDino(TeamDinoAssociation(tid, pids.get(0)))
+        //dao.addTeamDino(TeamDinoAssociation(tid, pids.get(3)))
+    }
+
     suspend fun populate() {
         val pids = feedDinos()
-//        feedTeams(pids)
+        feedTeams(pids)
     }
 
     suspend fun clear() {
@@ -122,18 +125,15 @@ class FeedDatabase {
         private fun getRandomTeamName(): String {
             return geRandomName(teamNames)
         }
-        /*
-                private fun getRandomTeam(leader: Long): Team {
-                    return Team(0,
-                            getRandomTeamName(),
-                            Objective.values()[rnd.nextInt(Objective.values().size)].name,
-                            Date(),
-                            getRandomBetween(3, 9),
-                            getRandomBetween(2, 4),
-                            getRandomBetween(4, 6),
-                            leader
-                    )
-                }
-        */
+
+        private fun getRandomTeam(): Team {
+            return Team(
+                0,
+                getRandomTeamName(),
+                Date(),
+                getRandomBetween(3, 9)
+            )
+        }
+
     }
 }

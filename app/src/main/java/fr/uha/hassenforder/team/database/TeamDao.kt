@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import fr.uha.hassenforder.team.model.FullTeam
 import fr.uha.hassenforder.team.model.Team
+import fr.uha.hassenforder.team.model.TeamDinoAssociation
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -31,4 +32,20 @@ interface TeamDao {
 
     @Delete
     fun delete(team: Team)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addTeamDino(member: TeamDinoAssociation)
+
+    @Delete
+    suspend fun removeTeamDino(member: TeamDinoAssociation)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addTeamDino(members: List<TeamDinoAssociation>)
+
+    @Delete
+    suspend fun removeTeamDino(members: List<TeamDinoAssociation>)
+
+    @Query("DELETE FROM tpas WHERE tid = :tid")
+    fun deleteTeamDinos(tid: Long)
+
 }

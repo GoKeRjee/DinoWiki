@@ -52,7 +52,9 @@ object AppModule {
     @Provides
     fun provideTeamRepository(
 //        dispatcher: CoroutineDispatcher,
-        teamDao: TeamDao
-    ) = TeamRepository(teamDao)
+        teamDao: TeamDao,
+        dinoDao: DinoDao
+    ) = TeamRepository(teamDao, dinoDao)
+
 
 }

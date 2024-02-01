@@ -2,14 +2,15 @@ package fr.uha.hassenforder.team.repository
 
 import fr.uha.hassenforder.team.database.DinoDao
 import fr.uha.hassenforder.team.model.Dino
+import fr.uha.hassenforder.team.model.DinoWithDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 
 class DinoRepository(private val dinoDao: DinoDao) {
-    fun getAll(): Flow<List<Dino>> {
-        return dinoDao.getAll()
+    fun getAll(): Flow<List<DinoWithDetails>> {
+        return dinoDao.getAllWithDetails()
     }
 
     fun getDinoById(id: Long): Flow<Dino?> {

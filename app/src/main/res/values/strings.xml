@@ -12,12 +12,28 @@
     <string name="dino_list">List of Dinos</string>
     <string name="action_dinos">dinos route</string>
     <string name="action_teams">teams route</string>
+    <string name="action_team_create">Create Team</string>
+    <string name="action_team_edit">Edit Team</string>
     <string name="dino_edit">Dino edit</string>
     <string name="action_dino_create">Create Dino</string>
     <string name="action_dino_edit">Edit Dino</string>
     <string name="populate">Populate</string>
     <string name="clean">clean</string>
     <string name="picture">Picture</string>
-
-
+    <string name="team_list">team list</string>
+    <string name="title_team_create">Create team</string>
+    <string name="title_team_edit">Edit Team</string>
+    <string name="teamname">Name</string>
+    <string name="start_day">Start day</string>
+    <string name="duration">Duration</string>
+    <string name="dino_select">Select a Dino</string>
+    <string name="member_select">Select a new member</string>
+    <string name="date_must_set">Date must be set</string>
+    <string name="date_too_old">Date too old</string>
+    <string name="date_too_far">Date too far</string>
+    <string name="duration_too_short">Duration too short</string>
+    <string name="duration_too_long">Duration too long</string>
+    <string name="members_not_empty">Members cannot be empty</string>
+    <string name="members_not_enough">Members not enough</string>
+    <string name="members_too_much">too much Members</string>
 </resources>

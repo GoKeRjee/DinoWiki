@@ -1,19 +1,18 @@
-package fr.uha.hassenforder.team.ui.dino
+package fr.uha.hassenforder.team.ui.team
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.uha.hassenforder.team.database.FeedDatabase
-import fr.uha.hassenforder.team.model.Dino
-import fr.uha.hassenforder.team.repository.DinoRepository
+import fr.uha.hassenforder.team.repository.TeamRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ListDinosViewModel @Inject constructor(
-    private val repository: DinoRepository
+class ListTeamsViewModel @Inject constructor(
+    private val repository: TeamRepository
 ) : ViewModel() {
     fun feed() = viewModelScope.launch {
         withContext(Dispatchers.IO) {
@@ -27,10 +26,6 @@ class ListDinosViewModel @Inject constructor(
         }
     }
 
-    fun delete(dino: Dino) = viewModelScope.launch {
-        repository.delete(dino)
-    }
-
-    val dinos = repository.getAll()
+    val teams = repository.getAll()
 
 }
