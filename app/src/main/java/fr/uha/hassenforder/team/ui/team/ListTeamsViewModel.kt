@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.uha.hassenforder.team.database.FeedDatabase
+import fr.uha.hassenforder.team.model.Team
 import fr.uha.hassenforder.team.repository.TeamRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +25,10 @@ class ListTeamsViewModel @Inject constructor(
         withContext(Dispatchers.IO) {
             FeedDatabase().clear()
         }
+    }
+
+    fun delete(team: Team) = viewModelScope.launch {
+        repository.delete(team)
     }
 
     val teams = repository.getAll()

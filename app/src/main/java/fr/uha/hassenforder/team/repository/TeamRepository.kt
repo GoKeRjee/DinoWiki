@@ -71,7 +71,9 @@ class TeamRepository(
     }
 
     suspend fun delete(team: Team) {
-        teamDao.delete(team)
-        teamDao.deleteTeamDinos(team.tid)
+        withContext(Dispatchers.IO) {
+            teamDao.delete(team)
+            teamDao.deleteTeamDinos(team.tid)
+        }
     }
 }
