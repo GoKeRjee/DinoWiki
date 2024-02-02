@@ -10,10 +10,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.Adb
 import androidx.compose.material.icons.outlined.Casino
 import androidx.compose.material.icons.outlined.DoNotDisturb
 import androidx.compose.material.icons.outlined.Error
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -92,7 +92,7 @@ fun ListDinosScreen(
 fun DinoItem(dino: DinoWithDetails) {
     val gender: ImageVector = when (dino.dino.gender) {
         Gender.NO -> Icons.Outlined.DoNotDisturb
-        Gender.MIXTE -> Icons.Outlined.Adb
+        Gender.MIXTE -> Icons.Outlined.FavoriteBorder
     }
 
     ListItem(

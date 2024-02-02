@@ -1,13 +1,19 @@
 package fr.uha.hassenforder.team.ui.team
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.AirportShuttle
+import androidx.compose.material.icons.outlined.ConnectingAirports
+import androidx.compose.material.icons.outlined.ElectricBolt
+import androidx.compose.material.icons.outlined.FitnessCenter
+import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.Start
-import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -27,6 +33,7 @@ import fr.uha.hassenforder.android.ui.AppMenuEntry
 import fr.uha.hassenforder.android.ui.AppTitle
 import fr.uha.hassenforder.android.ui.SwipeableItem
 import fr.uha.hassenforder.team.R
+import fr.uha.hassenforder.team.model.Capacity
 import fr.uha.hassenforder.team.model.Team
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,27 +85,46 @@ fun ListTeamsScreen(
 @Composable
 fun teamItem(team: Team) {
 
+    val capacityIcon = when (team.capacity) {
+        Capacity.DEFEND -> Icons.Outlined.Shield
+        Capacity.ATTACK -> Icons.Outlined.FitnessCenter
+        Capacity.TRANSPORT -> Icons.Outlined.AirportShuttle
+        Capacity.TRAVEL -> Icons.Outlined.ConnectingAirports
+        Capacity.FARM -> Icons.Outlined.ElectricBolt
+    }
     ListItem(
         headlineContent = {
-            Text(team.name)
+            Text(
+                text = team.name,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
         },
         supportingContent = {
-            Row() {
-                Icon(imageVector = Icons.Outlined.Start, contentDescription = null)
+            Column {
+                Row {
+                    Icon(imageVector = Icons.Outlined.Start, contentDescription = null)
+                    Text(
+                        text = UIConverter.convert(team.startDay),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(horizontal = 4.dp)
+                    )
+                }
                 Text(
-                    UIConverter.convert(team.startDay),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(horizontal = 4.dp)
-                )
-                Icon(imageVector = Icons.Outlined.Timer, contentDescription = null)
-                Text(
-                    UIConverter.convert(team.startDay),
+                    text = "${team.duration} days",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 4.dp)
                 )
             }
+        },
+        leadingContent = {
+            Icon(
+                imageVector = capacityIcon,
+                contentDescription = "Capacity",
+                modifier = Modifier.size(48.dp)
+            )
         }
     )
 }

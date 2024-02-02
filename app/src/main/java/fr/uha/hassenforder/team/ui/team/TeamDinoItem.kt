@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Adb
 import androidx.compose.material.icons.outlined.Article
 import androidx.compose.material.icons.outlined.Casino
 import androidx.compose.material.icons.outlined.DoNotDisturb
 import androidx.compose.material.icons.outlined.Error
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
@@ -28,7 +28,7 @@ fun TeamDinoItem(dino: Dino) {
     val gender: ImageVector =
         when (dino.gender) {
             Gender.NO -> Icons.Outlined.DoNotDisturb
-            Gender.MIXTE -> Icons.Outlined.Adb
+            Gender.MIXTE -> Icons.Outlined.FavoriteBorder
         }
     ListItem(
         headlineContent = {

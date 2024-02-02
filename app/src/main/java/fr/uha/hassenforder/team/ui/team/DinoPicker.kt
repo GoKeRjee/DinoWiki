@@ -67,7 +67,7 @@ private fun DinoItem(dino: Dino, onSelect: (dino: Dino?) -> Unit) {
     val gender: ImageVector =
         when (dino.gender) {
             Gender.NO -> Icons.Outlined.DoNotDisturb
-            Gender.MIXTE -> Icons.Outlined.Adb
+            Gender.MIXTE -> Icons.Outlined.FavoriteBorder
         }
     ListItem(
         modifier = Modifier
