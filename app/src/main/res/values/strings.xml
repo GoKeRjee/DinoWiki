@@ -20,7 +20,7 @@
     <string name="populate">Populate</string>
     <string name="clean">clean</string>
     <string name="picture">Picture</string>
-    <string name="team_list">team list</string>
+    <string name="team_list">List of Dino lineup</string>
     <string name="title_team_create">Create team</string>
     <string name="title_team_edit">Edit Team</string>
     <string name="teamname">Name</string>
@@ -36,4 +36,6 @@
     <string name="members_not_empty">Members cannot be empty</string>
     <string name="members_not_enough">Members not enough</string>
     <string name="members_too_much">too much Members</string>
+    <string name="capacity_must_set">Capacity must be set</string>
+    <string name="capacity">Capacité</string>
 </resources>

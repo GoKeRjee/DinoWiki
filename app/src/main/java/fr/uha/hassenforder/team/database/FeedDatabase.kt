@@ -1,6 +1,7 @@
 package fr.uha.hassenforder.team.database
 
 import fr.uha.hassenforder.team.model.Apprivoiser
+import fr.uha.hassenforder.team.model.Capacity
 import fr.uha.hassenforder.team.model.Dino
 import fr.uha.hassenforder.team.model.Gender
 import fr.uha.hassenforder.team.model.Regime
@@ -127,11 +128,13 @@ class FeedDatabase {
         }
 
         private fun getRandomTeam(): Team {
+            val randomCapacity = Capacity.values()[rnd.nextInt(Capacity.values().size)]
             return Team(
                 0,
                 getRandomTeamName(),
                 Date(),
-                getRandomBetween(3, 9)
+                getRandomBetween(3, 9),
+                capacity = randomCapacity
             )
         }
 

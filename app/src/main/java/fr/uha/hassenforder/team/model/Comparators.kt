@@ -40,9 +40,8 @@ class Comparators {
             if (safeNew.name != safeOld.name) return false
             if (safeNew.startDay != safeOld.startDay) return false
             if (safeNew.duration != safeOld.duration) return false
+            if (safeNew.capacity != safeOld.capacity) return false
             return true
         }
-
     }
-
 }

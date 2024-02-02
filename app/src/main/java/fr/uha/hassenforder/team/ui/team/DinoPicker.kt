@@ -78,33 +78,6 @@ private fun DinoItem(dino: Dino, onSelect: (dino: Dino?) -> Unit) {
             Row() {
                 Text(dino.name, modifier = Modifier.padding(end = 8.dp))
             }
-        },
-        /*
-
-                        supportingContent = {
-                            Row() {
-                                Icon(imageVector = Icons.Outlined.Phone, contentDescription = "phone", modifier = Modifier.padding(end = 8.dp))
-                                Text(person.phone, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                            }
-                },
-                 */
-        /*
-                leadingContent = {
-                    if (person.picture != null) {
-                        AsyncImage(
-                            model = person.picture,
-                            modifier = Modifier.size(64.dp),
-                            contentDescription = null,
-                            error = rememberVectorPainter(Icons.Outlined.Error),
-                            placeholder = rememberVectorPainter(Icons.Outlined.Casino),
-                        )
-                    }
-        },
-         */
-        /*
-                trailingContent = {
-                    Icon(imageVector = gender, contentDescription = "gender", modifier = Modifier.size(48.dp) )
-                },
-         */
+        }
     )
 }

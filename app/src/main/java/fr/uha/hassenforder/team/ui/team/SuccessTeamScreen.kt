@@ -12,7 +12,9 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import fr.uha.hassenforder.android.ui.OutlinedDateField
 import fr.uha.hassenforder.android.ui.OutlinedSpinnerField
+import fr.uha.hassenforder.android.ui.OutlinedSpinnerFieldEnum
 import fr.uha.hassenforder.team.R
+import fr.uha.hassenforder.team.model.Capacity
 
 @Composable
 fun SuccessTeamScreen(
@@ -37,6 +39,14 @@ fun SuccessTeamScreen(
             modifier = Modifier.fillMaxWidth(),
             label = R.string.start_day,
             errorId = team.startDay.errorId
+        )
+        OutlinedSpinnerFieldEnum(
+            value = team.capacity.current,
+            onValueChange = { uiCB.onEvent(TeamViewModel.UIEvent.CapacityChanged(it)) },
+            modifier = Modifier.fillMaxWidth(),
+            enumValues = Capacity.values(),
+            labelId = R.string.capacity,
+            errorId = team.capacity.errorId,
         )
         OutlinedSpinnerField(
             value = team.duration.current.toString(),

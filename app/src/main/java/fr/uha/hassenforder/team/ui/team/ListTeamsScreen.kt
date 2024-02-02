@@ -65,7 +65,7 @@ fun ListTeamsScreen(
             ) { item ->
                 SwipeableItem(
                     onEdit = { onEdit(item) },
-                    onDelete = {vm.delete(item)},
+                    onDelete = { vm.delete(item) },
                 ) {
                     teamItem(item)
                 }

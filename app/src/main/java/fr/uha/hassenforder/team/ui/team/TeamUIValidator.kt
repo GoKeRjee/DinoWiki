@@ -1,6 +1,7 @@
 package fr.uha.hassenforder.team.ui.team
 
 import fr.uha.hassenforder.team.R
+import fr.uha.hassenforder.team.model.Capacity
 import fr.uha.hassenforder.team.model.Dino
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -55,6 +56,14 @@ object TeamUIValidator {
             size < 3 -> R.string.members_not_enough
             size > 6 -> R.string.members_too_much
             else -> null
+        }
+    }
+
+    fun validateCapacityChange(newValue: Capacity?): Int? {
+        return if (newValue == null) {
+            R.string.capacity_must_set
+        } else {
+            null
         }
     }
 

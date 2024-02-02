@@ -4,6 +4,8 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fr.uha.hassenforder.android.kotlin.combine
+import fr.uha.hassenforder.team.model.Capacity
 import fr.uha.hassenforder.team.model.Comparators
 import fr.uha.hassenforder.team.model.Dino
 import fr.uha.hassenforder.team.model.FullTeam
@@ -49,6 +51,11 @@ class TeamViewModel @Inject constructor(
                 return FieldWrapper(newValue, errorId)
             }
 
+            fun buildCapacity(state: TeamUIState, newValue: Capacity?): FieldWrapper<Capacity?> {
+                val errorId: Int? = TeamUIValidator.validateCapacityChange(newValue)
+                return FieldWrapper(newValue, errorId)
+            }
+
             fun buildMembers(state: TeamUIState, newValue: List<Dino>?): FieldWrapper<List<Dino>> {
                 val errorId: Int? = TeamUIValidator.validateMembersChange(state, newValue)
                 return FieldWrapper(newValue, errorId)
@@ -59,6 +66,7 @@ class TeamViewModel @Inject constructor(
     private val _nameState = MutableStateFlow(FieldWrapper<String>())
     private val _startDayState = MutableStateFlow(FieldWrapper<Date>())
     private val _durationState = MutableStateFlow(FieldWrapper<Int>())
+    private val _capacityState = MutableStateFlow(FieldWrapper<Capacity?>())
     private val _membersState = MutableStateFlow(FieldWrapper<List<Dino>>())
 
     private val _teamId: MutableStateFlow<Long> = MutableStateFlow(0)
@@ -71,6 +79,7 @@ class TeamViewModel @Inject constructor(
                 _nameState.emit(FieldWrapper.buildName(uiState.value, t.team.name))
                 _startDayState.emit(FieldWrapper.buildStartDay(uiState.value, t.team.startDay))
                 _durationState.emit(FieldWrapper.buildDuration(uiState.value, t.team.duration))
+                _capacityState.emit(FieldWrapper.buildCapacity(uiState.value, t.team.capacity))
                 _membersState.emit(FieldWrapper.buildMembers(uiState.value, t.members))
                 TeamState.Success(team = t)
             } else {
@@ -79,7 +88,6 @@ class TeamViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TeamState.Loading)
 
-    private val _updateLeaderId: MutableSharedFlow<Long> = MutableSharedFlow(0)
     private val _addMemberId: MutableSharedFlow<Long> = MutableSharedFlow(0)
     private val _delMemberId: MutableSharedFlow<Long> = MutableSharedFlow(0)
 
@@ -112,6 +120,7 @@ class TeamViewModel @Inject constructor(
         val name: FieldWrapper<String>,
         val startDay: FieldWrapper<Date>,
         val duration: FieldWrapper<Int>,
+        val capacity: FieldWrapper<Capacity?>,
         val members: FieldWrapper<List<Dino>>,
     ) {
         private fun _isModified(): Boolean? {
@@ -120,6 +129,7 @@ class TeamViewModel @Inject constructor(
             if (name.current != initialState.team.team.name) return true
             if (startDay.current != initialState.team.team.startDay) return true
             if (duration.current != initialState.team.team.duration) return true
+            if (capacity.current != initialState.team.team.capacity) return true
             if (!Comparators.shallowEqualsListDinos(
                     members.current,
                     initialState.team.members
@@ -132,6 +142,7 @@ class TeamViewModel @Inject constructor(
             if (name.errorId != null) return true
             if (startDay.errorId != null) return true
             if (duration.errorId != null) return true
+            if (capacity.errorId != null) return true
             if (members.errorId != null) return true
             return false
         }
@@ -153,9 +164,9 @@ class TeamViewModel @Inject constructor(
 
     val uiState: StateFlow<TeamUIState> = combine(
         _initialTeamState,
-        _nameState, _startDayState, _durationState,
+        _nameState, _startDayState, _durationState, _capacityState,
         _membersState
-    ) { initial, n, s, d, mm -> TeamUIState(initial, n, s, d, mm) }.stateIn(
+    ) { initial, n, s, d, c, mm -> TeamUIState(initial, n, s, d, c, mm) }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = TeamUIState(
@@ -164,6 +175,7 @@ class TeamViewModel @Inject constructor(
             FieldWrapper(),
             FieldWrapper(),
             FieldWrapper(),
+            FieldWrapper()
         )
     )
 
@@ -171,6 +183,7 @@ class TeamViewModel @Inject constructor(
         data class NameChanged(val newValue: String) : UIEvent()
         data class StartDayChanged(val newValue: Date) : UIEvent()
         data class DurationChanged(val newValue: Int) : UIEvent()
+        data class CapacityChanged(val newValue: Capacity) : UIEvent()
         data class MemberAdded(val newValue: Long) : UIEvent()
         data class MemberDeleted(val newValue: Dino) : UIEvent()
     }
@@ -204,6 +217,13 @@ class TeamViewModel @Inject constructor(
                         )
                     )
 
+                    is UIEvent.CapacityChanged -> _capacityState.emit(
+                        FieldWrapper.buildCapacity(
+                            uiState.value,
+                            it.newValue
+                        )
+                    )
+
                     is UIEvent.MemberAdded -> _addMemberId.emit(it.newValue)
                     is UIEvent.MemberDeleted -> _delMemberId.emit(it.newValue.pid)
                 }
@@ -229,6 +249,7 @@ class TeamViewModel @Inject constructor(
                 name = _nameState.value.current!!,
                 startDay = _startDayState.value.current!!,
                 duration = _durationState.value.current!!,
+                capacity = _capacityState.value.current!!,
             ),
             members = _membersState.value.current!!
         )

@@ -10,5 +10,6 @@ data class Team(
     val tid: Long = 0,
     val name: String = "",
     val startDay: Date = Date(),
-    val duration: Int = 0
+    val duration: Int = 0,
+    val capacity: Capacity = Capacity.TRAVEL
 )
