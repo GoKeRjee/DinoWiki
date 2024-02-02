@@ -7,9 +7,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fr.uha.hassenforder.team.database.DinoDao
+import fr.uha.hassenforder.team.database.MoabDao
 import fr.uha.hassenforder.team.database.TeamDao
 import fr.uha.hassenforder.team.database.TeamDatabase
 import fr.uha.hassenforder.team.repository.DinoRepository
+import fr.uha.hassenforder.team.repository.MoabRepository
 import fr.uha.hassenforder.team.repository.TeamRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -39,6 +41,11 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideMoabDao(db: TeamDatabase): MoabDao = db.moabDao
+
+
+    @Singleton
+    @Provides
     fun provideTeamDao(db: TeamDatabase) = db.teamDao
 
     @Singleton
@@ -56,5 +63,10 @@ object AppModule {
         dinoDao: DinoDao
     ) = TeamRepository(teamDao, dinoDao)
 
-
+    @Singleton
+    @Provides
+    fun provideMoabRepository(
+        moabDao: MoabDao,
+        dinoDao: DinoDao
+    ) = MoabRepository(moabDao, dinoDao)
 }

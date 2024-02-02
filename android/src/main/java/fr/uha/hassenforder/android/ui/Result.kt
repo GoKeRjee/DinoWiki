@@ -9,7 +9,7 @@ sealed interface Result<out T> {
 
 fun <T> Flow<T>.asResult(): Flow<Result<T>> {
     return this
-        .map<T, Result<T>> {
+        .moab<T, Result<T>> {
             Result.Success(it)
         }
         .onStart { emit(Result.Loading) }

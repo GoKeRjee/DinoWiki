@@ -4,8 +4,11 @@ import fr.uha.hassenforder.team.model.Apprivoiser
 import fr.uha.hassenforder.team.model.Capacity
 import fr.uha.hassenforder.team.model.Dino
 import fr.uha.hassenforder.team.model.Gender
+import fr.uha.hassenforder.team.model.Moab
+import fr.uha.hassenforder.team.model.MoabDinoAssociation
 import fr.uha.hassenforder.team.model.Regime
 import fr.uha.hassenforder.team.model.Team
+import fr.uha.hassenforder.team.model.TeamDinoAssociation
 import fr.uha.hassenforder.team.model.Type
 import java.util.Date
 import java.util.Random
@@ -24,10 +27,7 @@ class FeedDatabase {
             dao.create(getRandomDino(Gender.NO, Type.CAVERNE, Regime.HERBIVORE, Apprivoiser.OUI))
         ids[3] = dao.create(
             getRandomDino(
-                Gender.NO,
-                Type.TERRESTRE,
-                Regime.HERBIVORE,
-                Apprivoiser.INCONNU
+                Gender.NO, Type.TERRESTRE, Regime.HERBIVORE, Apprivoiser.INCONNU
             )
         )
         return ids
@@ -38,13 +38,22 @@ class FeedDatabase {
         val dao: TeamDao = TeamDatabase.get().teamDao
         val team = getRandomTeam()
         val tid = dao.create(team)
-        //dao.addTeamDino(TeamDinoAssociation(tid, pids.get(0)))
-        //dao.addTeamDino(TeamDinoAssociation(tid, pids.get(3)))
+        dao.addTeamDino(TeamDinoAssociation(tid, pids.get(0)))
+        dao.addTeamDino(TeamDinoAssociation(tid, pids.get(3)))
+    }
+
+    private suspend fun feedMoabs(pids: LongArray) {
+        val moabDao: MoabDao = TeamDatabase.get().moabDao
+        val moab = getRandomMoab()
+        val mid = moabDao.create(moab)
+        moabDao.addMoabDino(MoabDinoAssociation(mid, pids[0]))
+        moabDao.addMoabDino(MoabDinoAssociation(mid, pids[1]))
     }
 
     suspend fun populate() {
         val pids = feedDinos()
         feedTeams(pids)
+        feedMoabs(pids)
     }
 
     suspend fun clear() {
@@ -83,11 +92,11 @@ class FeedDatabase {
         )
 
         private val teamNames: Array<String> = arrayOf(
-            "farm ressources",
-            "defense",
-            "attaque",
-            "transport",
-            "voyage"
+            "farm ressources", "defense", "attaque", "transport", "voyage"
+        )
+
+        private val moabNames: Array<String> = arrayOf(
+            "The Island", "Ragnarok", "Extinction", "Aberration", "Center"
         )
 
         private fun geRandomName(names: Array<String>): String {
@@ -107,19 +116,10 @@ class FeedDatabase {
         }
 
         private fun getRandomDino(
-            gender: Gender,
-            type: Type,
-            regime: Regime,
-            apprivoiser: Apprivoiser
+            gender: Gender, type: Type, regime: Regime, apprivoiser: Apprivoiser
         ): Dino {
             return Dino(
-                0,
-                getRandomName(),
-                gender,
-                type,
-                regime,
-                apprivoiser,
-                null
+                0, getRandomName(), gender, type, regime, apprivoiser, null
             )
         }
 
@@ -127,16 +127,21 @@ class FeedDatabase {
             return geRandomName(teamNames)
         }
 
+        private fun getRandomMoabName(): String {
+            return geRandomName(moabNames)
+        }
+
         private fun getRandomTeam(): Team {
             val randomCapacity = Capacity.values()[rnd.nextInt(Capacity.values().size)]
             return Team(
-                0,
-                getRandomTeamName(),
-                Date(),
-                getRandomBetween(3, 9),
-                capacity = randomCapacity
+                0, getRandomTeamName(), Date(), getRandomBetween(3, 9), capacity = randomCapacity
             )
         }
 
+        private fun getRandomMoab(): Moab {
+            return Moab(
+                0, getRandomMoabName(), null
+            )
+        }
     }
 }

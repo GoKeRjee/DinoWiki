@@ -43,5 +43,17 @@ class Comparators {
             if (safeNew.capacity != safeOld.capacity) return false
             return true
         }
+
+        fun shallowEqualsMoab(oldMoab: Moab?, newMoab: Moab?): Boolean {
+            if (newMoab == null && oldMoab == null) return true
+            if (newMoab != null && oldMoab == null) return false
+            if (newMoab == null && oldMoab != null) return false
+            val safeNew: Moab = newMoab as Moab
+            val safeOld: Moab = oldMoab as Moab
+            if (safeNew.mid != safeOld.mid) return false
+            if (safeNew.name != safeOld.name) return false
+            if (safeNew.image != safeOld.image) return false
+            return true
+        }
     }
 }

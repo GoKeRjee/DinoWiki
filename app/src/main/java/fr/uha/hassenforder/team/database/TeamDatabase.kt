@@ -7,6 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import fr.uha.hassenforder.android.database.DatabaseTypeConverters
 import fr.uha.hassenforder.team.model.Dino
+import fr.uha.hassenforder.team.model.Moab
+import fr.uha.hassenforder.team.model.MoabDinoAssociation
 import fr.uha.hassenforder.team.model.Team
 import fr.uha.hassenforder.team.model.TeamDinoAssociation
 
@@ -14,7 +16,9 @@ import fr.uha.hassenforder.team.model.TeamDinoAssociation
     entities = [
         Dino::class,
         Team::class,
-        TeamDinoAssociation::class
+        TeamDinoAssociation::class,
+        Moab::class,
+        MoabDinoAssociation::class
 
     ],
     version = 1,
@@ -26,6 +30,8 @@ abstract class TeamDatabase : RoomDatabase() {
     abstract val dinoDao: DinoDao
 
     abstract val teamDao: TeamDao
+
+    abstract val moabDao: MoabDao
 
     companion object {
         private lateinit var instance: TeamDatabase
