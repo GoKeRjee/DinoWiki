@@ -9,10 +9,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.AirportShuttle
+import androidx.compose.material.icons.outlined.Backpack
 import androidx.compose.material.icons.outlined.ConnectingAirports
 import androidx.compose.material.icons.outlined.ElectricBolt
 import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.Shield
+import androidx.compose.material.icons.outlined.SportsKabaddi
 import androidx.compose.material.icons.outlined.Start
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -23,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -85,13 +88,14 @@ fun ListTeamsScreen(
 @Composable
 fun teamItem(team: Team) {
 
-    val capacityIcon = when (team.capacity) {
-        Capacity.DEFEND -> Icons.Outlined.Shield
-        Capacity.ATTACK -> Icons.Outlined.FitnessCenter
-        Capacity.TRANSPORT -> Icons.Outlined.AirportShuttle
-        Capacity.TRAVEL -> Icons.Outlined.ConnectingAirports
-        Capacity.FARM -> Icons.Outlined.ElectricBolt
+    val (capacityIcon, capacityColor) = when (team.capacity) {
+        Capacity.DEFEND -> Pair(Icons.Outlined.Shield, Color.Green)
+        Capacity.ATTACK -> Pair(Icons.Outlined.SportsKabaddi, Color.Red)
+        Capacity.TRANSPORT -> Pair(Icons.Outlined.Backpack, Color(0xFF8B4513))
+        Capacity.TRAVEL -> Pair(Icons.Outlined.ConnectingAirports, Color.White)
+        Capacity.FARM -> Pair(Icons.Outlined.ElectricBolt, Color.Yellow)
     }
+
     ListItem(
         headlineContent = {
             Text(
@@ -123,6 +127,7 @@ fun teamItem(team: Team) {
             Icon(
                 imageVector = capacityIcon,
                 contentDescription = "Capacity",
+                tint = capacityColor,
                 modifier = Modifier.size(48.dp)
             )
         }
