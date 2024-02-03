@@ -23,7 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
@@ -32,7 +34,9 @@ import fr.uha.hassenforder.android.ui.AppMenuEntry
 import fr.uha.hassenforder.android.ui.AppTitle
 import fr.uha.hassenforder.android.ui.SwipeableItem
 import fr.uha.hassenforder.team.R
+import fr.uha.hassenforder.team.model.Community
 import fr.uha.hassenforder.team.model.Moab
+import fr.uha.hassenforder.team.ui.team.UIConverter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,7 +98,26 @@ fun moabItem(moab: Moab) {
                         placeholder = rememberVectorPainter(Icons.Outlined.Casino),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(moab.name, modifier = Modifier.padding(end = 4.dp))
+                    Column {
+                        Text(
+                            moab.name,
+                            modifier = Modifier.padding(end = 4.dp),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp
+                        )
+                        Text(
+                            UIConverter.convert(moab.startDay),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Normal,
+                            modifier = Modifier.padding(horizontal = 4.dp)
+                        )
+                        Text(
+                            if (moab.community == Community.YES) "Community" else "Official",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Normal,
+                            modifier = Modifier.padding(horizontal = 4.dp)
+                        )
+                    }
                 }
             }
         },

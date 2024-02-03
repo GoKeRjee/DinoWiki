@@ -5,6 +5,8 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fr.uha.hassenforder.android.kotlin.combine
+import fr.uha.hassenforder.team.model.Community
 import fr.uha.hassenforder.team.model.Comparators
 import fr.uha.hassenforder.team.model.Dino
 import fr.uha.hassenforder.team.model.FullMoab
@@ -39,24 +41,36 @@ class MoabViewModel @Inject constructor(
                 return FieldWrapper(newValue, errorId)
             }
 
+            fun buildStartDay(state: MoabUIState, newValue: Date): FieldWrapper<Date> {
+                val errorId: Int? = MoabUIValidator.validateStartDayChange(newValue)
+                return FieldWrapper(newValue, errorId)
+            }
+
+            fun buildCommunity(state: MoabUIState, newValue: Community?): FieldWrapper<Community?> {
+                val errorId: Int? = MoabUIValidator.validateCommunityChange(newValue)
+                return FieldWrapper(newValue, errorId)
+            }
+
             fun buildPicture(
-                state: MoabViewModel.MoabUIState, newValue: Uri?
-            ): MoabViewModel.FieldWrapper<Uri?> {
+                state: MoabUIState, newValue: Uri?
+            ): FieldWrapper<Uri?> {
                 val errorId: Int? = MoabUIValidator.validatePictureChange(newValue)
                 return FieldWrapper(newValue, errorId)
             }
 
             fun buildMembers(
-                state: MoabViewModel.MoabUIState, newValue: List<Dino>?
-            ): MoabViewModel.FieldWrapper<List<Dino>> {
+                state: MoabUIState, newValue: List<Dino>?
+            ): FieldWrapper<List<Dino>> {
                 val errorId: Int? = MoabUIValidator.validateMembersChange(state, newValue)
-                return MoabViewModel.FieldWrapper(newValue, errorId)
+                return FieldWrapper(newValue, errorId)
             }
         }
     }
 
     private val _nameState = MutableStateFlow(FieldWrapper<String>())
+    private val _startDayState = MutableStateFlow(FieldWrapper<Date>())
     private val _pictureState = MutableStateFlow(FieldWrapper<Uri?>())
+    private val _communityState = MutableStateFlow(FieldWrapper<Community?>())
     private val _membersState = MutableStateFlow(FieldWrapper<List<Dino>>())
 
     private val _moabId: MutableStateFlow<Long> = MutableStateFlow(0)
@@ -66,6 +80,8 @@ class MoabViewModel @Inject constructor(
         _moabId.flatMapLatest { id -> repository.getMoabById(id) }.map { m ->
             if (m != null) {
                 _nameState.emit(FieldWrapper.buildName(uiState.value, m.moab.name))
+                _startDayState.emit(FieldWrapper.buildStartDay(uiState.value, m.moab.startDay))
+                _communityState.emit(FieldWrapper.buildCommunity(uiState.value, m.moab.community))
                 _pictureState.emit(FieldWrapper.buildPicture(uiState.value, m.moab.image))
                 _membersState.emit(FieldWrapper.buildMembers(uiState.value, m.members))
                 MoabState.Success(moab = m)
@@ -99,13 +115,16 @@ class MoabViewModel @Inject constructor(
     data class MoabUIState(
         val initialState: MoabState,
         val name: FieldWrapper<String>,
-        val pictureState: MoabViewModel.FieldWrapper<Uri?>,
+        val startDay: FieldWrapper<Date>,
+        val community: FieldWrapper<Community?>,
+        val pictureState: FieldWrapper<Uri?>,
         val members: FieldWrapper<List<Dino>>,
     ) {
         private fun _isModified(): Boolean? {
             if (initialState !is MoabState.Success) return null
             if (name.current != initialState.moab.moab.name) return true
-            if (name.current != initialState.moab.moab.name) return true
+            if (startDay.current != initialState.moab.moab.startDay) return true
+            if (community.current != initialState.moab.moab.community) return true
             if (pictureState.current != initialState.moab.moab.image) return true
             if (pictureState.current != null) return true
             if (!Comparators.shallowEqualsListDinos(
@@ -117,6 +136,8 @@ class MoabViewModel @Inject constructor(
 
         private fun _hasError(): Boolean? {
             if (name.errorId != null) return true
+            if (startDay.errorId != null) return true
+            if (community.errorId != null) return true
             if (pictureState.errorId != null) return true
             if (members.errorId != null) return true
             return false
@@ -138,8 +159,8 @@ class MoabViewModel @Inject constructor(
     }
 
     val uiState: StateFlow<MoabUIState> = combine(
-        _initialMoabState, _nameState, _pictureState, _membersState
-    ) { initial, n, p, mm -> MoabUIState(initial, n, p, mm) }.stateIn(
+        _initialMoabState, _nameState, _startDayState, _communityState, _pictureState, _membersState
+    ) { initial, n, s, c, p, mm -> MoabUIState(initial, n, s, c, p, mm) }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = MoabUIState(
@@ -147,12 +168,15 @@ class MoabViewModel @Inject constructor(
             FieldWrapper(),
             FieldWrapper(),
             FieldWrapper(),
-
-            )
+            FieldWrapper(),
+            FieldWrapper()
+        )
     )
 
     sealed class UIEvent {
         data class NameChanged(val newValue: String) : UIEvent()
+        data class StartDayChanged(val newValue: Date) : MoabViewModel.UIEvent()
+        data class CommunityChanged(val newValue: Community) : MoabViewModel.UIEvent()
         data class PictureChanged(val newValue: Uri?) : MoabViewModel.UIEvent()
         data class MemberAdded(val newValue: Long) : UIEvent()
         data class MemberDeleted(val newValue: Dino) : UIEvent()
@@ -171,8 +195,22 @@ class MoabViewModel @Inject constructor(
                     )
                 )
 
-                is MoabViewModel.UIEvent.PictureChanged -> _pictureState.emit(
-                    MoabViewModel.FieldWrapper.buildPicture(
+                is UIEvent.StartDayChanged -> _startDayState.emit(
+                    FieldWrapper.buildStartDay(
+                        uiState.value,
+                        it.newValue
+                    )
+                )
+
+                is UIEvent.CommunityChanged -> _communityState.emit(
+                    FieldWrapper.buildCommunity(
+                        uiState.value,
+                        it.newValue
+                    )
+                )
+
+                is UIEvent.PictureChanged -> _pictureState.emit(
+                    FieldWrapper.buildPicture(
                         uiState.value, it.newValue
                     )
                 )
@@ -199,7 +237,9 @@ class MoabViewModel @Inject constructor(
             Moab(
                 mid = _moabId.value,
                 name = _nameState.value.current!!,
-                image = _pictureState.value.current
+                startDay = _startDayState.value.current!!,
+                community = _communityState.value.current!!,
+                image = _pictureState.value.current,
             ), members = _membersState.value.current!!
         )
         repository.saveMoab(oldMoab.moab, moab)

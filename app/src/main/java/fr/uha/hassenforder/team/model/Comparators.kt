@@ -52,6 +52,8 @@ class Comparators {
             val safeOld: Moab = oldMoab as Moab
             if (safeNew.mid != safeOld.mid) return false
             if (safeNew.name != safeOld.name) return false
+            if (safeNew.startDay != safeOld.startDay) return false
+            if (safeNew.community != safeOld.community) return false
             if (safeNew.image != safeOld.image) return false
             return true
         }

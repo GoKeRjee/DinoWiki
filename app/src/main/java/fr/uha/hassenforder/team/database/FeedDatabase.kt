@@ -2,6 +2,7 @@ package fr.uha.hassenforder.team.database
 
 import fr.uha.hassenforder.team.model.Apprivoiser
 import fr.uha.hassenforder.team.model.Capacity
+import fr.uha.hassenforder.team.model.Community
 import fr.uha.hassenforder.team.model.Dino
 import fr.uha.hassenforder.team.model.Gender
 import fr.uha.hassenforder.team.model.Moab
@@ -138,9 +139,14 @@ class FeedDatabase {
             )
         }
 
+        private fun getRandomCommunity(): Community {
+            return if (rnd.nextBoolean()) Community.YES else Community.NO
+        }
+
+
         private fun getRandomMoab(): Moab {
             return Moab(
-                0, getRandomMoabName(), null
+                0, getRandomMoabName(), Date(), getRandomCommunity(), null
             )
         }
     }

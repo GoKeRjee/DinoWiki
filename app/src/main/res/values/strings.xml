@@ -45,4 +45,6 @@
     <string name="action_moab_create">Create map</string>
     <string name="action_moabs">maps route</string>
     <string name="action_moab_edit">Edit map</string>
+    <string name="community_must_set">Community must be set</string>
+    <string name="community">Community</string>
 </resources>

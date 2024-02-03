@@ -8,11 +8,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.AirportShuttle
 import androidx.compose.material.icons.outlined.Backpack
 import androidx.compose.material.icons.outlined.ConnectingAirports
 import androidx.compose.material.icons.outlined.ElectricBolt
-import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.SportsKabaddi
 import androidx.compose.material.icons.outlined.Start
