@@ -1,11 +1,13 @@
 package fr.uha.hassenforder.team.ui.team
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Backpack
@@ -36,6 +38,7 @@ import fr.uha.hassenforder.android.ui.SwipeableItem
 import fr.uha.hassenforder.team.R
 import fr.uha.hassenforder.team.model.Capacity
 import fr.uha.hassenforder.team.model.Team
+import fr.uha.hassenforder.team.ui.theme.Purple80
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,11 +98,19 @@ fun teamItem(team: Team) {
     }
 
     ListItem(
+        modifier = Modifier
+            .padding(10.dp)
+            .border(
+                width = 1.dp,
+                color = Purple80,
+                shape = RoundedCornerShape(8.dp)
+            ),
         headlineContent = {
             Text(
                 text = team.name,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                color = capacityColor
             )
         },
         supportingContent = {

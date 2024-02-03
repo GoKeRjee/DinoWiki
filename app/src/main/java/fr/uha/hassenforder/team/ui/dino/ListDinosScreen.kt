@@ -1,5 +1,6 @@
 package fr.uha.hassenforder.team.ui.dino
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Casino
@@ -39,6 +41,7 @@ import fr.uha.hassenforder.team.R
 import fr.uha.hassenforder.team.model.Dino
 import fr.uha.hassenforder.team.model.DinoWithDetails
 import fr.uha.hassenforder.team.model.Gender
+import fr.uha.hassenforder.team.ui.theme.Purple80
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -107,6 +110,13 @@ fun DinoItem(dino: DinoWithDetails) {
     }
 
     ListItem(
+        modifier = Modifier
+            .padding(10.dp)
+            .border(
+            width = 1.dp,
+            color = Purple80,
+            shape = RoundedCornerShape(8.dp)
+        ),
         headlineContent = {
             Column() {
                 Row(verticalAlignment = Alignment.Top) {
