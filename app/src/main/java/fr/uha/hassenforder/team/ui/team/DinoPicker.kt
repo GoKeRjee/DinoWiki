@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -64,11 +65,21 @@ fun DinoPicker(
 
 @Composable
 private fun DinoItem(dino: Dino, onSelect: (dino: Dino?) -> Unit) {
-    val gender: ImageVector =
-        when (dino.gender) {
-            Gender.NO -> Icons.Outlined.DoNotDisturb
-            Gender.MIXTE -> Icons.Outlined.FavoriteBorder
+    val genderIcon: ImageVector
+    var genderTint = Color.Unspecified
+
+    when (dino.gender) {
+        Gender.NO -> {
+            genderIcon = Icons.Outlined.DoNotDisturb
+            genderTint = Color.White
         }
+
+        Gender.MIXTE -> {
+            genderIcon = Icons.Outlined.FavoriteBorder
+            genderTint = Color.Red
+        }
+    }
+
     ListItem(
         modifier = Modifier
             .padding(5.dp)
@@ -78,6 +89,14 @@ private fun DinoItem(dino: Dino, onSelect: (dino: Dino?) -> Unit) {
             Row() {
                 Text(dino.name, modifier = Modifier.padding(end = 8.dp))
             }
+        },
+        trailingContent = {
+            Icon(
+                imageVector = genderIcon,
+                contentDescription = null,
+                modifier = Modifier.size(48.dp),
+                tint = genderTint
+            )
         }
     )
 }

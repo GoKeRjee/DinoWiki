@@ -14,6 +14,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
@@ -25,11 +26,20 @@ import fr.uha.hassenforder.team.model.Gender
 
 @Composable
 fun TeamDinoItem(dino: Dino) {
-    val gender: ImageVector =
-        when (dino.gender) {
-            Gender.NO -> Icons.Outlined.DoNotDisturb
-            Gender.MIXTE -> Icons.Outlined.FavoriteBorder
+    val genderIcon: ImageVector
+    val genderTint: Color
+
+    when (dino.gender) {
+        Gender.NO -> {
+            genderIcon = Icons.Outlined.DoNotDisturb
+            genderTint = Color.White
         }
+
+        Gender.MIXTE -> {
+            genderIcon = Icons.Outlined.FavoriteBorder
+            genderTint = Color.Red
+        }
+    }
     ListItem(
         headlineContent = {
             Row() {
@@ -67,9 +77,10 @@ fun TeamDinoItem(dino: Dino) {
         },
         trailingContent = {
             Icon(
-                imageVector = gender,
+                imageVector = genderIcon,
                 contentDescription = "gender",
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(48.dp),
+                tint = genderTint
             )
         },
     )

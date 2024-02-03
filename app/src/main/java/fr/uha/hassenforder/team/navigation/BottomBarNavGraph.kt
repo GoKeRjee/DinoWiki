@@ -14,8 +14,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Adb
 import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.outlined.Adb
 import androidx.compose.material.icons.outlined.Group
+import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -56,8 +58,8 @@ sealed class BottomBarNavGraphEntry(
     object Moabs : BottomBarNavGraphEntry(
         route = "tl_moabs",
         title = R.string.action_moabs,
-        icon = Icons.Outlined.Group,
-        iconFocused = Icons.Filled.Group
+        icon = Icons.Outlined.Map,
+        iconFocused = Icons.Filled.Map
     )
 
     // for teams
