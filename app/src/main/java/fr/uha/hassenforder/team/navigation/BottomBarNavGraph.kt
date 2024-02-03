@@ -52,6 +52,14 @@ sealed class BottomBarNavGraphEntry(
         iconFocused = Icons.Filled.Adb
     )
 
+    // for moabs
+    object Moabs : BottomBarNavGraphEntry(
+        route = "tl_moabs",
+        title = R.string.action_moabs,
+        icon = Icons.Outlined.Group,
+        iconFocused = Icons.Filled.Group
+    )
+
     // for teams
     object Teams : BottomBarNavGraphEntry(
         route = "tl_teams",
@@ -59,7 +67,6 @@ sealed class BottomBarNavGraphEntry(
         icon = Icons.Outlined.Group,
         iconFocused = Icons.Filled.Group
     )
-
 }
 
 @Composable
@@ -74,6 +81,7 @@ fun BottomNavGraph(
     ) {
         DinosNavGraph(navController = navController)
         teamsNavGraph(navController = navController)
+        moabsNavGraph(navController = navController)
     }
 }
 
@@ -82,7 +90,8 @@ fun BottomBar(navController: NavHostController) {
 
     val screens = listOf(
         BottomBarNavGraphEntry.Dinos,
-        BottomBarNavGraphEntry.Teams
+        BottomBarNavGraphEntry.Teams,
+        BottomBarNavGraphEntry.Moabs
     )
 
     val navStackBackEntry by navController.currentBackStackEntryAsState()

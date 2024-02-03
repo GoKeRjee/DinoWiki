@@ -38,8 +38,11 @@
     <string name="members_too_much">too much Members</string>
     <string name="capacity_must_set">Capacity must be set</string>
     <string name="capacity">Capacity</string>
-    <string name="title_moab_create">Create moab title</string>
-    <string name="title_moab_edit">Edit moab title</string>
-    <string name="moab_list">List of Moab</string>
-    <string name="moabname">moab name</string>
+    <string name="title_moab_create">Create moab</string>
+    <string name="title_moab_edit">Edit moab</string>
+    <string name="moab_list">List of Moabs</string>
+    <string name="moabname">Moab name</string>
+    <string name="action_moab_create">Create moab</string>
+    <string name="action_moabs">moabs route</string>
+    <string name="action_moab_edit">Edit moab</string>
 </resources>
