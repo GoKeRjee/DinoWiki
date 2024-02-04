@@ -113,10 +113,10 @@ fun DinoItem(dino: DinoWithDetails) {
         modifier = Modifier
             .padding(10.dp)
             .border(
-            width = 1.dp,
-            color = Purple80,
-            shape = RoundedCornerShape(8.dp)
-        ),
+                width = 1.dp,
+                color = Purple80,
+                shape = RoundedCornerShape(8.dp)
+            ),
         headlineContent = {
             Column() {
                 Row(verticalAlignment = Alignment.Top) {

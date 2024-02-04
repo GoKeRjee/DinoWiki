@@ -12,8 +12,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Casino
 import androidx.compose.material.icons.outlined.Error
+import androidx.compose.material.icons.outlined.FiberNew
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -24,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -40,6 +44,10 @@ import fr.uha.hassenforder.team.model.Community
 import fr.uha.hassenforder.team.model.Moab
 import fr.uha.hassenforder.team.ui.team.UIConverter
 import fr.uha.hassenforder.team.ui.theme.Purple80
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,6 +97,16 @@ fun ListMoabsScreen(
 
 @Composable
 fun moabItem(moab: Moab) {
+    val releaseDate = moab.startDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+    val today = LocalDate.now()
+    val daysBetween = ChronoUnit.DAYS.between(releaseDate, today)
+
+    val (statusIcon, statusTint) = when {
+        daysBetween < 0 -> Icons.Outlined.AutoAwesome to Color.Yellow
+        daysBetween in 0..5 -> Icons.Outlined.FiberNew to Color.Green
+        else -> Icons.Outlined.AccessTime to Color.Gray
+    }
+
     ListItem(
         modifier = Modifier
             .padding(10.dp)
@@ -130,6 +148,14 @@ fun moabItem(moab: Moab) {
                     }
                 }
             }
+        },
+        trailingContent = {
+            Icon(
+                imageVector = statusIcon,
+                contentDescription = null,
+                modifier = Modifier.size(48.dp),
+                tint = statusTint
+            )
         },
     )
 }
