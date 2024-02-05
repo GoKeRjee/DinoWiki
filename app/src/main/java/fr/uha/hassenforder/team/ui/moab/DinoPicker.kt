@@ -23,6 +23,7 @@ import fr.uha.hassenforder.team.R
 import fr.uha.hassenforder.team.database.DinoDao
 import fr.uha.hassenforder.team.model.Dino
 import fr.uha.hassenforder.team.model.Gender
+import fr.uha.hassenforder.team.ui.team.keepNotSelectedDino
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -39,8 +40,14 @@ fun DinoPicker(
     vm: DinoPickerViewModel = hiltViewModel(),
     @StringRes title: Int?,
     onSelect: (dino: Dino?) -> Unit,
+    alreadySelected: List<Dino>?
 ) {
     val list = vm.dinos.collectAsStateWithLifecycle(initialValue = emptyList())
+    val notSelected = if (alreadySelected != null) keepNotSelectedDino(
+        list.value,
+        alreadySelected!!
+    ) else list.value
+
     Dialog(onDismissRequest = { onSelect(null) }) {
         Scaffold(
             topBar = {
@@ -53,7 +60,7 @@ fun DinoPicker(
                 modifier = Modifier.padding(innerPadding)
             ) {
                 items(
-                    items = list.value,
+                    items = notSelected,
                     key = { dino -> dino.pid }
                 ) { item ->
                     DinoItem(item, onSelect)
@@ -61,6 +68,10 @@ fun DinoPicker(
             }
         }
     }
+}
+
+fun keepNotSelectedDino(value: List<Dino>, alreadySelected: List<Dino>): List<Dino> {
+    return value.filter { dino -> dino !in alreadySelected }
 }
 
 @Composable

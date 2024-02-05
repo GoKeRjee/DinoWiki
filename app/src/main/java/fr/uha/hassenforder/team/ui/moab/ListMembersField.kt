@@ -37,7 +37,8 @@ fun ListMembersField(
     if (showDialog.value) {
         DinoPicker(
             title = R.string.member_select,
-            onSelect = { showDialog.value = false; if (it != null) onAdd(it.pid) }
+            onSelect = { showDialog.value = false; if (it != null) onAdd(it.pid) },
+            alreadySelected = value
         )
     }
 
